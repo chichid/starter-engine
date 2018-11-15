@@ -1,0 +1,25 @@
+{
+	"name": "redux-typescript",
+	"roots": [
+		"../src/"
+	],
+	"moduleFileExtensions": [
+		"ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+	],
+	"transform": {
+		"^.+\\.(ts|tsx)$": "ts-jest"
+	},
+	"globals": {
+		"tsConfig": {
+			"tsConfigFile": "config/tsconfig.json"
+		}
+	},
+	"testMatch": [
+		"**/*.spec.+(ts|tsx|js)"
+	]
+}
