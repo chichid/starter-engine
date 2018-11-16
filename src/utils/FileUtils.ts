@@ -12,7 +12,7 @@ export class FileUtils {
       FileUtils.existsImpl(path, r, j);
     });
   }
-  
+
   static existsImpl(path: string, resolve: Function, reject: Function) {
     exists(path, exists => resolve(exists));
   }
