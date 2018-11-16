@@ -4,6 +4,7 @@
 	"jsRules": {},
 	"linterOptions": {
 		"exclude": [
+			"./test/TestStarter",
 			"../dist",
 			"../node_modules"
 		]
