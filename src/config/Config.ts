@@ -9,6 +9,7 @@ import {
 
 export class Config {
   private static instance: Config;
+  private cache: KeyValue;
 
   static async get<T = string>(key: ConfigKey) {
     return Config.getConfig().get(key);
@@ -27,8 +28,12 @@ export class Config {
   public async get<T>(key: ConfigKey) {
     const config = Config.getConfig();
     const configPath = config.getConfigFilePath();
-    const keyValues = await config.load(configPath);
-    return keyValues.get(key.toString());
+    
+    if (!this.cache) {
+      this.cache = await config.load(configPath);
+    }
+    
+    return this.cache.get(key.toString());
   }
   
   public getBasePath(): string {
