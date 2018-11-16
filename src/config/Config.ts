@@ -11,10 +11,7 @@ export class Config {
   private static instance: Config;
 
   static async get<T = string>(key: ConfigKey) {
-    const config = Config.getConfig();
-    const configPath = config.getConfigFilePath();
-    const keyValues = await config.load(configPath);
-    return keyValues.get(key.toString());
+    return Config.getConfig().get(key);
   }
 
   public static getConfig(): Config {
@@ -27,6 +24,13 @@ export class Config {
     return Config.instance;
   }
 
+  public async get<T>(key: ConfigKey) {
+    const config = Config.getConfig();
+    const configPath = config.getConfigFilePath();
+    const keyValues = await config.load(configPath);
+    return keyValues.get(key.toString());
+  }
+  
   public getBasePath(): string {
     return process.env['config'] || DEFAULT_CONFIG_PATH;
   }
