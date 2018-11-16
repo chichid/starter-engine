@@ -1,6 +1,6 @@
 import { Template } from './Template';
 import { FileUtils } from '../utils/FileUtils';
-import { Config, ConfigKeys } from './Config';
+import { Config, ConfigKeys } from '../config/Config';
 import { resolve } from 'path';
 
 export class TemplateLoader {
