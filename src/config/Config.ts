@@ -11,18 +11,28 @@ export class Config {
   private static instance: Config;
 
   static async get<T = string>(key: ConfigKey) {
-    const config = Config.getInstance();
-    const configPath = config.getPath();
+    const config = Config.getConfig();
+    const configPath = config.getConfigFilePath();
     const keyValues = await config.load(configPath);
     return keyValues.get(key.toString());
   }
 
-  private static getInstance(): Config {
+  public static getConfig(): Config {
+    // TODO when injection is available get rid of the singleton
+        
     if (Config.instance == null) {
       Config.instance = new Config();
     }
 
     return Config.instance;
+  }
+
+  public getBasePath(): string {
+    return process.env['config'] || DEFAULT_CONFIG_PATH;
+  }
+
+  public getConfigFilePath(): string {
+    return `${this.getBasePath()}/${DEFAULT_CONFIG_FILE}`
   }
 
   private async load(path: string) {
@@ -44,10 +54,5 @@ export class Config {
       console.warn(`Unable to parse the configuration file at path ${path}. Using the default configurations.`);
       return DEFAULT_CONFIG;
     }
-  }
-
-  private getPath(): string {
-    const configPath = process.env['config'] || DEFAULT_CONFIG_PATH;
-    return `${configPath}/${DEFAULT_CONFIG_FILE}`;
   }
 }
