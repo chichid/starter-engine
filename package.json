@@ -1,10 +1,11 @@
 {
   "name": "starter-engine",
   "version": "1.0.0",
-  "description": "Test redux with typescript",
-  "author": "x87ma",
+  "description": "Lightweight and performant starter projects and scaffolding engine. Provides more flexibility on where starters are hosted: git, url or npm package.",
+  "author": "chichid",
   "license": "MIT",
   "main": "index.js",
+  "repository": "https://github.com/chichid/starter-engine",
   "files": [
     "dist/**/*"
   ],
