@@ -1,6 +1,6 @@
 import { Template } from './Template';
 import { FileUtils } from '../utils/FileUtils';
-import { Config  } from '../config';
+import { Config  } from '../config/index';
 import { resolve } from 'path';
 
 export class TemplateLoader {
@@ -13,8 +13,7 @@ export class TemplateLoader {
   }
 
   private async resolveTemplatePath() {
-    const basePath = Config.getConfig().getConfigFilePath();
-    const baseFolder = await Config.get(basePath);
+    const baseFolder = Config.getConfig().getBasePath();
     const path = resolve(baseFolder, this.template.path);
     return path;
   }
