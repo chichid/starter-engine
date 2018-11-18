@@ -1,26 +1,39 @@
 {
 	"compilerOptions": {
+		"moduleResolution": "node",
+		"baseUrl": "../src",
 		"target": "es5",
 		"noImplicitAny": true,
 		"removeComments": true,
 		"preserveConstEnums": true,
 		"sourceMap": true,
 		"esModuleInterop": true,
-		"lib": ["dom", "es2015"],
+		"experimentalDecorators": true,
+		"paths": {
+			"@core/*": ["core/*"]
+		},
+		"types": [
+			"reflect-metadata",
+			"jest",
+			"node"
+		],
+		"lib": [
+			"dom",
+			"es2015"
+		],
 		"plugins": [
-      { 
+			{
 				"name": "typescript-tslint-plugin",
-				"configFile": "./config/tslint.json"
+				"configFile": "../config/tslint.json"
 			}
-    ]
+		]
 	},
 	"include": [
-		"../src/**/*"
+		"../src/**/*.ts"
 	],
 	"exclude": [
 		"../node_modules",
 		"../build",
-		"../dist",
-		"../**/*.spec.ts"
+		"../dist"
 	]
 }

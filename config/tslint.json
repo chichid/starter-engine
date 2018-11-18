@@ -10,7 +10,9 @@
 		]
 	},
 	"rules": {
-		"eofline": false
+		"eofline": false,
+		"indent": [true, "spaces", 2],
+		"import-name": [ false ]
 	},
 	"rulesDirectory": []
 }

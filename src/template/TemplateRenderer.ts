@@ -9,8 +9,9 @@ export class TemplateRenderer {
   }
 
   private compileHandlebars(content: string) {
-    const compiled = Handlebars.compile(content);
-    const result = compiled(content);
-    return result;
+    // TODO implement
+    // const compiled = Handlebars.compile(content);
+    // const result = compiled(content);
+    // return result;
   }
 }

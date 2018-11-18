@@ -1,5 +1,7 @@
-import { Config } from './Config';
-import { ConfigKey } from './ConfigKeys';
+import ConfigModule, {
+  ConfigKey,
+  Config,
+} from '.';
 
 describe('Config', () => {
   const getConfigTestKey = (key: string) => {
@@ -7,68 +9,68 @@ describe('Config', () => {
     return key as any as ConfigKey;
   };
 
-  afterEach(() => {
-    if (Config['instance']) {
-      delete Config['instance'];
-    }
-  });
+  const fixture = (): Config => {
+    const instance = ConfigModule.create(Config);
+    return instance;
+  };
 
-  it('should get the config instance', () => {
-    let instance = Config.getConfig();
+  it('should create the config instance', () => {
+    const instance = fixture();
     expect(instance).toBeDefined();
-    expect(Config.getConfig()).toBe(instance);
   });
 
   it('should get the default configuration file path', () => {
-    process.env['config'] = "";
-    let file = Config.getConfig().getConfigFilePath();
-    expect(file).toBe(`./.staengrc`)
+    process.env['config'] = '';
+    const instance = fixture();
+    let file = instance.getConfigFilePath();
+    expect(file).toBe('./.staengrc');
 
-    process.env['config'] = "./test/staengrc/test-read";
-    file = Config.getConfig().getConfigFilePath();
-    expect(file).toBe(`./test/staengrc/test-read/.staengrc`)
+    process.env['config'] = './test/staengrc/test-read';
+    file = instance.getConfigFilePath();
+    expect(file).toBe('./test/staengrc/test-read/.staengrc');
   });
 
   it('should get the base path', () => {
-    process.env['config'] = "";
-    let path = Config.getConfig().getBasePath();
-    expect(path).toBe(`.`);
+    process.env['config'] = '';
+    const instance = fixture();
+    let path = instance.getBasePath();
+    expect(path).toBe('.');
 
-    process.env['config'] = "./test/staengrc/test-read";
-    path = Config.getConfig().getBasePath();
-    expect(path).toBe(`./test/staengrc/test-read`);
+    process.env['config'] = './test/staengrc/test-read';
+    path = instance.getBasePath();
+    expect(path).toBe('./test/staengrc/test-read');
   });
 
   it('should cache the config', async () => {
     let loadCallCount = 0;
-    let config = Config.getConfig();
+    const instance = fixture();
 
     // wrap the load function
-    let loadFunc = config['load'];
-    config['load'] = function () {
-      loadCallCount++;
-      return loadFunc.apply(config, arguments);
-    }
+    const loadFunc = instance['load'];
+    instance['load'] = function () {
+      loadCallCount = loadCallCount + 1;
+      return loadFunc.apply(instance, arguments);
+    };
 
     // Get the configs then test if the load function was called several times
-    await Config.get(getConfigTestKey('TEST_KEY_1'));
-    await Config.get(getConfigTestKey('TEST_KEY_1'));
-    await Config.get(getConfigTestKey('TEST_KEY_1'));
+    await instance.get(getConfigTestKey('TEST_KEY_1'));
+    await instance.get(getConfigTestKey('TEST_KEY_1'));
+    await instance.get(getConfigTestKey('TEST_KEY_1'));
 
     expect(loadCallCount).toBe(1);
   });
 
   it('should return the default folder config', async () => {
-    // TODO when dependency injection is solved use it for the FileUtils dependency
-    process.env['config'] = "./test/staengrc/test-read";
-    const config = await Config.get(getConfigTestKey('TEST_KEY_2'));
-    expect(config).toBe("Test Value 2")
+    const instance = fixture();
+    process.env['config'] = './test/staengrc/test-read';
+    const config = await instance.get(getConfigTestKey('TEST_KEY_2'));
+    expect(config).toBe('Test Value 2');
   });
 
   it('should detect wrong configuration', async () => {
-    // TODO when dependency injection is solved use it for the FileUtils dependency
-    process.env['config'] = "./test/staengrc/test-wrong";
-    const config = await Config.get(getConfigTestKey('TEST_KEY_2'));
+    const instance = fixture();
+    process.env['config'] = './test/staengrc/test-error';
+    const config = await instance.get(getConfigTestKey('TEST_KEY_2'));
     expect(config).not.toBeDefined();
   });
 });

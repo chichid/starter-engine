@@ -1,4 +1,7 @@
 {
   "tslint.autoFixOnSave": true,
-  "jest.pathToConfig": "./config/jest.json"
+  "jest.pathToConfig": "./config/jest.json",
+  "editor.autoIndent": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2
 }

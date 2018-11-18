@@ -3,6 +3,9 @@
 	"roots": [
 		"../src/"
 	],
+	"moduleNameMapper": {
+		"@core/(.*)": "<rootDir>/../src/core/$1"
+	},
 	"moduleFileExtensions": [
 		"ts",
     "tsx",
@@ -16,7 +19,7 @@
 	},
 	"globals": {
 		"tsConfig": {
-			"tsConfigFile": "config/tsconfig.json"
+			"tsConfigFile": "tsconfig.json"
 		}
 	},
 	"testMatch": [

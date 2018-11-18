@@ -1,35 +1,23 @@
-import { FileUtils } from '../utils/FileUtils';
+import { inject } from 'inversify';
 import { ConfigKey } from './ConfigKeys';
+import { FileUtils } from '../utils';
+import { Injectable } from '@core/Injectable';
 import {
   DEFAULT_CONFIG,
   DEFAULT_CONFIG_PATH,
   DEFAULT_CONFIG_FILE,
 } from './Defaults';
 
+@Injectable()
 export class Config {
-  private static instance: Config;
   private cache: KeyValue;
-
-  static async get<T = string>(key: ConfigKey) {
-    return Config.getConfig().get(key);
-  }
-
-  public static getConfig(): Config {
-    // TODO when injection is available get rid of the singleton
-
-    if (Config.instance == null) {
-      Config.instance = new Config();
-    }
-
-    return Config.instance;
-  }
+  @inject(FileUtils) protected fileUtils: FileUtils;
 
   public async get<T>(key: ConfigKey) {
-    const config = Config.getConfig();
-    const configPath = config.getConfigFilePath();
+    const configPath = this.getConfigFilePath();
 
     if (!this.cache) {
-      this.cache = await config.load(configPath);
+      this.cache = await this.load(configPath);
     }
 
     return this.cache.get(key.toString());
@@ -44,14 +32,14 @@ export class Config {
   }
 
   private async load(path: string) {
-    const exists = await FileUtils.exists(path);
+    const exists = await this.fileUtils.exists(path);
 
     if (!exists) {
       console.warn(`File ${path} not found. Using the default configurations.`);
       return DEFAULT_CONFIG;
     }
 
-    const content = await FileUtils.readFile(path);
+    const content = await this.fileUtils.readFile(path);
 
     try {
       const parsedContent = JSON.parse(content);
