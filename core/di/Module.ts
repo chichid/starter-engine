@@ -43,7 +43,7 @@ export class Mod {
     }
 
     for (const imp of imports) {
-      if (imp instanceof Module) {
+      if (imp instanceof Mod) {
         this.importModuleExports(imp as Mod);
       } else {
         this.importDependency(imp);
