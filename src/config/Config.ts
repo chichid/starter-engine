@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
+import { Injectable } from '@core/Injectable';
 import { ConfigKey } from './ConfigKeys';
 import { FileUtils } from '../utils';
-import { Injectable } from '@core/Injectable';
 import {
   DEFAULT_CONFIG,
   DEFAULT_CONFIG_PATH,

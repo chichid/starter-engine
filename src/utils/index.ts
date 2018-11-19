@@ -3,7 +3,7 @@ import { Module } from '@core/Module';
 
 export { FileUtils };
 
-export default new Module({
+export default Module({
   exports: [
     FileUtils,
   ],

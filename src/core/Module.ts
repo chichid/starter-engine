@@ -8,7 +8,11 @@ class ModuleMetadata {
   exports?: Array<any> = [];
 }
 
-export class Module {
+export function Module(metadata: ModuleMetadata): Mod {
+  return new Mod(metadata);
+}
+
+export class Mod {
   private container: Container;
 
   get exports() {
@@ -39,14 +43,14 @@ export class Module {
 
     for (const imp of imports) {
       if (imp instanceof Module) {
-        this.importModuleExports(imp as Module);
+        this.importModuleExports(imp as Mod);
       } else {
         this.importDependency(imp);
       }
     }
   }
 
-  private importModuleExports(mod: Module) {
+  private importModuleExports(mod: Mod) {
     if (mod && mod.metadata && mod.metadata.exports) {
       for (const modImport of mod.metadata.exports) {
         this.importDependency(modImport);

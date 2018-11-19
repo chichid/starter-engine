@@ -5,7 +5,7 @@ import { Module } from '../core';
 
 export { Config, ConfigKey };
 
-export default new Module({
+export default Module({
   imports: [
     FileUtils,
   ],
