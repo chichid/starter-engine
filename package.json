@@ -13,7 +13,7 @@
     "start": "npm run build:dev -- --watch",
     "build:dev": "./node_modules/.bin/webpack --config ./config/webpack.dev.js",
     "build:prod": "./node_modules/.bin/webpack --config ./config/webpack.prod.js",
-    "clean": "./node_modules/.bin/rimraf dist",
+    "clean": "./node_modules/.bin/rimraf dist starter-engine-**.tgz",
     "lint": "./node_modules/.bin/tslint --project config/tsconfig.json --config config/tslint.json",
     "test": "./node_modules/.bin/jest --config config/jest.json",
     "prepack": "npm run clean && npm run lint && npm run test && npm run build:prod"
