@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "inversify": "^5.0.1",
+    "prettier": "^1.15.2",
     "reflect-metadata": "^0.1.12"
   }
 }
