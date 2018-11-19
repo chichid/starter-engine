@@ -10,8 +10,8 @@ import {
 
 @Injectable()
 export class Config {
-  private cache: KeyValue;
   @Inject private fileUtils: FileUtils;
+  private cache: KeyValue;
 
   public async get<T>(key: ConfigKey) {
     const configPath = this.getConfigFilePath();
