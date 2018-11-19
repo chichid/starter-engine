@@ -1,2 +1,1 @@
-export enum ConfigKey {
-}
+export enum ConfigKey {}

@@ -1,7 +1,7 @@
-import { Template } from './Template';
+import { Template } from "./Template";
 
 export class TemplateRenderer {
-  constructor(private template: Template) { }
+  constructor(private template: Template) {}
 
   async render() {
     const content = await this.template.load();

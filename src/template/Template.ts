@@ -1,5 +1,5 @@
-import { TemplateLoader } from './TemplateLoader';
-import { TemplateRenderer } from './TemplateRenderer';
+import { TemplateLoader } from "./TemplateLoader";
+import { TemplateRenderer } from "./TemplateRenderer";
 
 export class Template {
   get path(): string {
@@ -10,10 +10,7 @@ export class Template {
     return this.model;
   }
 
-  constructor(
-    private templatePath: string,
-    private templateModel: Object,
-  ) { }
+  constructor(private templatePath: string, private templateModel: Object) {}
 
   async load(): Promise<string> {
     const loader = new TemplateLoader(this);

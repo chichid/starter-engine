@@ -1,7 +1,7 @@
-import { Template } from './Template';
-import { FileUtils } from '../utils/FileUtils';
-import { Config  } from '../config/index';
-import { resolve } from 'path';
+import { Template } from "./Template";
+import { FileUtils } from "../utils/FileUtils";
+import { Config } from "../config/index";
+import { resolve } from "path";
 
 export class TemplateLoader {
   constructor(private template: Template) {}
@@ -11,7 +11,7 @@ export class TemplateLoader {
     // const path = await this.resolveTemplatePath();
     // const content = await FileUtils.readFile(path);
     // return content;
-    return '';
+    return "";
   }
 
   private async resolveTemplatePath() {

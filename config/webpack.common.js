@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
   entry: "./src/main.ts",
@@ -9,8 +9,6 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"]
   },
   module: {
-    rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" }
-    ]
+    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }]
   }
 };
