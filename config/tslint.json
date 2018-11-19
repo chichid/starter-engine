@@ -1,18 +1,14 @@
 {
-	"defaultSeverity": "error",
-	"extends": "tslint-config-airbnb",
-	"jsRules": {},
-	"linterOptions": {
-		"exclude": [
-			"./test/TestStarter",
-			"../dist",
-			"../node_modules"
-		]
-	},
-	"rules": {
-		"eofline": false,
-		"indent": [true, "spaces", 2],
-		"import-name": [ false ]
-	},
-	"rulesDirectory": []
+  "defaultSeverity": "error",
+  "jsRules": {},
+  "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["./test/TestStarter", "../dist", "../node_modules"]
+  },
+  "rules": {
+    "eofline": false,
+    "indent": [true, "spaces", 2],
+    "import-name": [false]
+  },
+  "rulesDirectory": []
 }

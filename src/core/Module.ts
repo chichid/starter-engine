@@ -1,5 +1,5 @@
-import { Container } from 'inversify';
-import 'reflect-metadata';
+import { Container } from "inversify";
+import "reflect-metadata";
 
 class ModuleMetadata {
   // tslint:disable-next-line
@@ -8,6 +8,7 @@ class ModuleMetadata {
   exports?: Array<any> = [];
 }
 
+// tslint:disable-next-line
 export function Module(metadata: ModuleMetadata): Mod {
   return new Mod(metadata);
 }

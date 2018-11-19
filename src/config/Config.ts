@@ -1,17 +1,18 @@
-import { inject } from 'inversify';
-import { Injectable } from '@core/Injectable';
-import { ConfigKey } from './ConfigKeys';
-import { FileUtils } from '../utils';
+import { inject } from "inversify";
+import { Injectable } from "@core/Injectable";
+import { Inject } from "@core/Inject";
+import { ConfigKey } from "./ConfigKeys";
+import { FileUtils } from "../utils";
 import {
   DEFAULT_CONFIG,
   DEFAULT_CONFIG_PATH,
-  DEFAULT_CONFIG_FILE,
-} from './Defaults';
+  DEFAULT_CONFIG_FILE
+} from "./Defaults";
 
 @Injectable()
 export class Config {
   private cache: KeyValue;
-  @inject(FileUtils) protected fileUtils: FileUtils;
+  @Inject public fileUtils: FileUtils;
 
   public async get<T>(key: ConfigKey) {
     const configPath = this.getConfigFilePath();
@@ -24,7 +25,7 @@ export class Config {
   }
 
   public getBasePath(): string {
-    return process.env['config'] || DEFAULT_CONFIG_PATH;
+    return process.env["config"] || DEFAULT_CONFIG_PATH;
   }
 
   public getConfigFilePath(): string {
@@ -45,11 +46,13 @@ export class Config {
       const parsedContent = JSON.parse(content);
       const keys = Object.keys(parsedContent);
       const keyValues = keys.map(k => [k, parsedContent[k]]) as any;
-      return new Map<string, string>(keyValues as ReadonlyArray<[string, string]>);
+      return new Map<string, string>(keyValues as ReadonlyArray<
+        [string, string]
+      >);
     } catch (e) {
       console.warn(
         `Unable to parse the configuration file at path ${path}.` +
-        'Using the default configurations.',
+          "Using the default configurations."
       );
       return DEFAULT_CONFIG;
     }

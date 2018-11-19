@@ -1,5 +1,5 @@
-import { readFile, exists } from 'fs';
-import { Injectable } from '@core/Injectable';
+import { readFile, exists } from "fs";
+import { Injectable } from "@core/Injectable";
 
 @Injectable()
 export class FileUtils {
