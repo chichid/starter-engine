@@ -1,8 +1,7 @@
-import { inject } from "inversify";
-import { Injectable } from "@core/Injectable";
-import { Inject } from "@core/Inject";
+import { Injectable, Inject } from "@core/di";
 import { ConfigKey } from "./ConfigKeys";
 import { FileUtils } from "../utils";
+import { KeyValue } from "./types";
 import {
   DEFAULT_CONFIG,
   DEFAULT_CONFIG_PATH,

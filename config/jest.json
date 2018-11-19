@@ -2,7 +2,7 @@
   "name": "redux-typescript",
   "roots": ["../src/"],
   "moduleNameMapper": {
-    "@core/(.*)": "<rootDir>/../src/core/$1"
+    "@core/(.*)": "<rootDir>/../core/$1"
   },
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
   "transform": {
