@@ -6,6 +6,6 @@ import UtilsModule from "../utils";
 export { Config, ConfigKey };
 
 export default Module({
-  imports: [UtilsModule],
+  imports: [UtilsModule, Config],
   exports: [Config]
 });

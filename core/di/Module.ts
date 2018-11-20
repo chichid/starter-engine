@@ -15,18 +15,28 @@ export function Module(metadata: ModuleMetadata): Mod {
 
 export class Mod {
   private container: Container;
+  private importedTypes: Map<string, any>;
 
   get exports() {
     return this.metadata.exports;
   }
 
   constructor(private metadata: ModuleMetadata) {
+    this.importedTypes = new Map<string, string>();
+
     if (this.metadata) {
       this.initContainer();
     }
   }
 
   create(T: any) {
+    const type = T.name;
+    const moduleHasType: boolean = !!this.importedTypes.get(type);
+
+    if (!moduleHasType) {
+      throw `type ${type} is not declared in its parent module`;
+    }
+
     return this.container.resolve<typeof T>(T);
   }
 
@@ -60,6 +70,13 @@ export class Mod {
   }
 
   private importDependency(dep: any) {
-    this.container.bind(dep).toSelf();
+    const type = dep.name;
+
+    if (type) {
+      this.importedTypes.set(type, dep);
+      this.container.bind(dep).toSelf();
+    } else {
+      throw `Unable to import the ${dep}`;
+    }
   }
 }
