@@ -1,10 +1,20 @@
 {
   "name": "redux-typescript",
-  "roots": ["../src/"],
+  "roots": [
+    "../src/",
+    "../core/"
+  ],
   "moduleNameMapper": {
     "@core/(.*)": "<rootDir>/../core/$1"
   },
-  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
   "transform": {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
@@ -13,5 +23,7 @@
       "tsConfigFile": "tsconfig.json"
     }
   },
-  "testMatch": ["**/*.spec.+(ts|tsx|js)"]
+  "testMatch": [
+    "**/*.spec.+(ts|tsx|js)"
+  ]
 }
