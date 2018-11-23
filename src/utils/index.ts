@@ -3,6 +3,7 @@ import { Module } from "@core/di";
 
 export { FileUtils };
 
-export default Module({
+@Module({
   exports: [FileUtils]
-});
+})
+export class UtilsModule {}

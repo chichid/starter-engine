@@ -1,12 +1,12 @@
 import { Injectable } from "./Injectable";
 import { Inject } from "./Inject";
-import { Module } from "./Module";
+import { Module, Injector } from "./Module";
 
 describe("Inject", () => {
   @Injectable()
   class ClsA {
     methodA(): string {
-      return 'Hello World!';
+      return "Hello World!";
     }
   }
 
@@ -19,13 +19,13 @@ describe("Inject", () => {
     }
   }
 
-  const mod = Module({
+  @Module({
     imports: [ClsA, ClsB]
-  });
+  })
+  class TestMod {}
 
-
-  it('should use injectable', () => {
-    const instance: ClsA = mod.create(ClsA);
-    expect(instance.methodA()).toBe('Hello World!');
+  it("should use injectable", () => {
+    const instance: ClsA = Injector(TestMod).create(ClsA);
+    expect(instance.methodA()).toBe("Hello World!");
   });
 });

@@ -1,67 +1,80 @@
 import { Injectable } from "./Injectable";
-import { Module } from "./Module";
+import { Module, Injector } from "./Module";
 
 describe("Core Dependency Injection Module", () => {
   // Fixtures
   @Injectable()
   class ClsA {
     methodA() {
-
+      return "methodA";
     }
   }
 
   @Injectable()
   class ClsB {
     methodB() {
-
+      return true;
     }
   }
 
   @Injectable()
-  class ClsC {
-  }
+  class ClsC {}
 
   // Tests
-  it('should create an empty module module', () => {
-    const mod = Module(null);
+  it("should create an empty module module", () => {
+    @Module({})
+    class ModA {}
+
+    const mod = new ModA();
     expect(mod).toBeDefined();
-    expect(mod['metadata']).toBeNull();
   });
 
-  it('should create a module with an import', () => {
-    const modA = Module({
+  it("should create a module with an import", () => {
+    @Module({
       imports: [ClsA, ClsB]
-    });
+    })
+    class ModA {}
+    const modA = new ModA();
     expect(modA).toBeDefined();
 
-    const instanceA = modA.create(ClsA);
+    const instanceA = Injector(ModA).create(ClsA);
     expect(instanceA).toBeDefined();
     expect(instanceA.methodA).toBeDefined();
+    expect(instanceA.methodA()).toEqual("methodA");
 
-    const instanceB = modA.create(ClsB);
+    const instanceB = Injector(ModA).create(ClsB);
     expect(instanceB.methodB).toBeDefined();
+    expect(instanceB.methodB()).toEqual(true);
   });
 
-  it('should create a module that imports another module', () => {
-    const modA = Module({
+  it("should create a module that imports another module", () => {
+    @Module({
       imports: [ClsA, ClsC],
       exports: [ClsA]
-    });
+    })
+    class ModA {}
 
-    const modB = Module({
-      imports: [
-        modA,
-        ClsB
-      ]
-    });
+    @Module({
+      imports: [ModA, ClsB]
+    })
+    class ModB {}
 
-    expect(modA.create(ClsA)).toBeDefined();
-    expect(modA.create(ClsC)).toBeDefined();
+    expect(Injector(ModA).create(ClsA)).toBeDefined();
+    expect(Injector(ModA).create(ClsC)).toBeDefined();
 
-    expect(modB.create(ClsB)).toBeDefined();
-    expect(modB.create(ClsA)).toBeDefined();
+    expect(Injector(ModB).create(ClsB)).toBeDefined();
+    expect(Injector(ModA).create(ClsA)).toBeDefined();
 
-    try { modA.create(ClsB); } catch (e) { expect(e).toBeDefined(); }
-    try { modB.create(ClsC); } catch (e) { expect(e).toBeDefined(); }
+    try {
+      Injector(ModA).create(ClsB);
+    } catch (e) {
+      expect(e).toBeDefined();
+    }
+
+    try {
+      Injector(ModB).create(ClsC);
+    } catch (e) {
+      expect(e).toBeDefined();
+    }
   });
 });

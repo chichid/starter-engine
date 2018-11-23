@@ -1,4 +1,5 @@
-import ConfigModule, { ConfigKey, Config } from ".";
+import { Injector } from "@core/di/Module";
+import { ConfigModule, ConfigKey, Config } from ".";
 
 describe("Config", () => {
   const getConfigTestKey = (key: string) => {
@@ -7,7 +8,7 @@ describe("Config", () => {
   };
 
   const fixture = (): Config => {
-    const instance = ConfigModule.create(Config);
+    const instance = Injector(ConfigModule).create(Config);
     return instance;
   };
 
