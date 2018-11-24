@@ -19,7 +19,6 @@
     "prepack": "npm run clean && npm run lint && npm run test && npm run build:prod"
   },
   "devDependencies": {
-    "@types/handlebars": "^4.0.39",
     "@types/jest": "^23.3.9",
     "@types/node": "^10.12.9",
     "jest": "~23.6.0",
