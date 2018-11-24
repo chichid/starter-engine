@@ -25,5 +25,12 @@
   },
   "testMatch": [
     "**/*.spec.+(ts|tsx|js)"
+  ],
+  "coverageDirectory": "../reports",
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "../src/**/*.{ts,tsx}",
+    "../core/**/*.{ts,tsx}",
+    "!**/node_modules/**"
   ]
 }
