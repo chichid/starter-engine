@@ -45,13 +45,13 @@ export class Config {
       const parsedContent = JSON.parse(content);
       const keys = Object.keys(parsedContent);
       const keyValues = keys.map(k => [k, parsedContent[k]]) as any;
-      return new Map<string, string>(keyValues as ReadonlyArray<
-        [string, string]
-      >);
+      return new Map<string, string>(
+        keyValues as ReadonlyArray<[string, string]>
+      );
     } catch (e) {
       console.warn(
         `Unable to parse the configuration file at path ${path}.` +
-          "Using the default configurations."
+        `Using the default configurations.`
       );
       return DEFAULT_CONFIG;
     }

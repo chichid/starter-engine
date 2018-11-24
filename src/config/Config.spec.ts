@@ -68,7 +68,9 @@ describe("Config", () => {
   it("should detect wrong configuration", async () => {
     const instance = fixture();
     process.env["config"] = "./test/staengrc/test-error";
+    console.warn = jest.fn();
     const config = await instance.get(getConfigTestKey("TEST_KEY_2"));
     expect(config).not.toBeDefined();
+    expect(console.warn).toBeCalled();
   });
 });
