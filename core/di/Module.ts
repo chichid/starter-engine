@@ -1,5 +1,6 @@
-import { Container } from "inversify";
 import "reflect-metadata";
+import { Container } from "inversify";
+import { setProperty, getProperty } from "./utils";
 
 class ModuleMetadata {
   // tslint:disable-next-line
@@ -16,31 +17,11 @@ export function Module(metadata?: ModuleMetadata) {
 // tslint:disable-next-line
 export function _modDecorator(target: any) {
   const mod = new Mod(this);
-  target.___core_di_module = mod;
+  setProperty(target, "module", mod);
   return target;
 }
 
-// tslint:disable-next-line
-export function Injector(mod: any): Inj {
-  const { ___core_di_module } = mod;
-
-  if (!___core_di_module) {
-    throw `Unable to get injector for module ${mod.name}`;
-  }
-
-  const m = ___core_di_module as Mod;
-  (m as any).___core_di_name = mod.name;
-  return new Inj(m);
-}
-
-class Inj {
-  constructor(private module: Mod) {}
-  create(T: any) {
-    return this.module.create(T);
-  }
-}
-
-class Mod {
+export class Mod {
   private container: Container;
   private importedTypes: Map<string, any>;
 
@@ -61,9 +42,7 @@ class Mod {
     const moduleHasType: boolean = !!this.importedTypes.get(type);
 
     if (!moduleHasType) {
-      throw `${type} is not declared in module ${
-        (this as any).___core_di_name
-      }`;
+      throw `${type} is not declared in module ${getProperty(this, "name")}`;
     }
 
     return this.container.resolve<typeof T>(T);
@@ -82,8 +61,9 @@ class Mod {
     }
 
     for (const imp of imports) {
-      if (imp.___core_di_module) {
-        this.importModuleExports(imp.___core_di_module as Mod);
+      const m = getProperty(imp, "module");
+      if (m instanceof Mod) {
+        this.importModuleExports(m as Mod);
       } else {
         this.importDependency(imp);
       }

@@ -1,5 +1,6 @@
 import { Injectable } from "./Injectable";
-import { Module, Injector } from "./Module";
+import { Module } from "./Module";
+import { Injector } from "./Injector";
 
 describe("Core Dependency Injection Module", () => {
   // Fixtures
@@ -18,12 +19,12 @@ describe("Core Dependency Injection Module", () => {
   }
 
   @Injectable()
-  class ClsC {}
+  class ClsC { }
 
   // Tests
   it("should create an empty module module", () => {
     @Module({})
-    class ModA {}
+    class ModA { }
 
     const mod = new ModA();
     expect(mod).toBeDefined();
@@ -33,7 +34,7 @@ describe("Core Dependency Injection Module", () => {
     @Module({
       imports: [ClsA, ClsB]
     })
-    class ModA {}
+    class ModA { }
     const modA = new ModA();
     expect(modA).toBeDefined();
 
@@ -52,12 +53,12 @@ describe("Core Dependency Injection Module", () => {
       imports: [ClsA, ClsC],
       exports: [ClsA]
     })
-    class ModA {}
+    class ModA { }
 
     @Module({
       imports: [ModA, ClsB]
     })
-    class ModB {}
+    class ModB { }
 
     expect(Injector(ModA).create(ClsA)).toBeDefined();
     expect(Injector(ModA).create(ClsC)).toBeDefined();

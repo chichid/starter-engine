@@ -1,6 +1,4 @@
-import { Injectable } from "./Injectable";
-import { Inject } from "./Inject";
-import { Module, Injector } from "./Module";
+import { Injector, Module, Inject, Injectable } from ".";
 
 describe("Inject", () => {
   @Injectable()
@@ -22,7 +20,7 @@ describe("Inject", () => {
   @Module({
     imports: [ClsA, ClsB]
   })
-  class TestMod {}
+  class TestMod { }
 
   it("should use injectable", () => {
     const instance: ClsA = Injector(TestMod).create(ClsA);

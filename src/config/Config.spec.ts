@@ -1,4 +1,4 @@
-import { Injector } from "@core/di/Module";
+import { Injector } from "@core/di";
 import { ConfigModule, ConfigKey, Config } from ".";
 
 describe("Config", () => {
@@ -45,7 +45,7 @@ describe("Config", () => {
 
     // wrap the load function
     const loadFunc = instance["load"];
-    instance["load"] = function() {
+    instance["load"] = function () {
       loadCallCount = loadCallCount + 1;
       return loadFunc.apply(instance, arguments);
     };
