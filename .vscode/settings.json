@@ -4,5 +4,6 @@
   "editor.formatOnSave": true,
   "editor.autoIndent": true,
   "editor.insertSpaces": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "tslint.configFile": "./config/tslint.json"
 }

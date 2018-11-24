@@ -23,13 +23,13 @@ jest.mock("inversify", () => ({
 // Test
 describe("Inject", () => {
   it("should inject a property", () => {
-    let instance = new ClsB();
+    const instance = new ClsB();
     Inject(instance, "clsA");
     expect((instance as any).clsA).toBeDefined();
   });
 
   it("should call methods within injected property", () => {
-    let instance = new ClsB();
+    const instance = new ClsB();
     Inject(instance, "clsA");
     instance.methodB();
     expect((instance as any).clsA.methodA).toBeCalled();

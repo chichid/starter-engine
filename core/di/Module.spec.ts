@@ -19,12 +19,12 @@ describe("Core Dependency Injection Module", () => {
   }
 
   @Injectable()
-  class ClsC { }
+  class ClsC {}
 
   // Tests
   it("should create an empty module module", () => {
     @Module({})
-    class ModA { }
+    class ModA {}
 
     const mod = new ModA();
     expect(mod).toBeDefined();
@@ -34,7 +34,7 @@ describe("Core Dependency Injection Module", () => {
     @Module({
       imports: [ClsA, ClsB]
     })
-    class ModA { }
+    class ModA {}
     const modA = new ModA();
     expect(modA).toBeDefined();
 
@@ -53,12 +53,12 @@ describe("Core Dependency Injection Module", () => {
       imports: [ClsA, ClsC],
       exports: [ClsA]
     })
-    class ModA { }
+    class ModA {}
 
     @Module({
       imports: [ModA, ClsB]
     })
-    class ModB { }
+    class ModB {}
 
     expect(Injector(ModA).create(ClsA)).toBeDefined();
     expect(Injector(ModA).create(ClsC)).toBeDefined();
@@ -79,7 +79,7 @@ describe("Core Dependency Injection Module", () => {
     }
   });
 
-  it('should get exports', () => {
+  it("should get exports", () => {
     const testMod = new Mod({
       exports: [ClsA]
     });
@@ -87,34 +87,34 @@ describe("Core Dependency Injection Module", () => {
     expect(testMod.exports).toEqual([ClsA]);
   });
 
-  it('should throw exception when unable to import dependencies', () => {
+  it("should throw exception when unable to import dependencies", () => {
     const testMod = new Mod({
       exports: [ClsA]
     });
 
     const t = () => {
-      (testMod as any).importDependency({})
+      (testMod as any).importDependency({});
     };
 
     expect(t).toThrow();
   });
 
-  it('should throw exception when metadata is empty', () => {
+  it("should throw exception when metadata is empty", () => {
     const testMod = new Mod(undefined);
     expect((testMod as any).metadata).toBeUndefined();
   });
 
-  it('should import module exports', () => {
+  it("should import module exports", () => {
     @Module({
       exports: [ClsA]
     })
-    class TestParentMod { }
+    class TestParentMod {}
 
     const testMod = new Mod({
       imports: [TestParentMod]
     });
 
-    let tm = testMod as any;
+    const tm = testMod as any;
     tm.importModuleExports(new TestParentMod());
     expect(tm.importedTypes.get(ClsA.name)).toBeDefined();
   });
