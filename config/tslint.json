@@ -1,7 +1,11 @@
 {
   "defaultSeverity": "error",
   "jsRules": {},
-  "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-eslint-rules",
+    "tslint-config-prettier"
+  ],
   "linterOptions": {
     "exclude": ["./test/TestStarter", "../dist", "../node_modules"]
   },
