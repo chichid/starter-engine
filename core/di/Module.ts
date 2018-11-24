@@ -2,11 +2,11 @@ import "reflect-metadata";
 import { Container } from "inversify";
 import { setProperty, getProperty } from "./utils";
 
-class ModuleMetadata {
+export class ModuleMetadata {
   // tslint:disable-next-line
-  imports?: Array<any> = [];
+  imports?: Array<any>;
   // tslint:disable-next-line
-  exports?: Array<any> = [];
+  exports?: Array<any>;
 }
 
 // tslint:disable-next-line
@@ -85,7 +85,7 @@ export class Mod {
       this.importedTypes.set(type, dep);
       this.container.bind(dep).toSelf();
     } else {
-      throw `Unable to import the ${dep}`;
+      throw `Unable to import ${dep}`;
     }
   }
 }

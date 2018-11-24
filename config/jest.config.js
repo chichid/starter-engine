@@ -3,6 +3,7 @@ const { compilerOptions } = require('./tsconfig');
 
 const args = process.argv.slice(2);
 const isWatch = args.indexOf("--watch") !== -1;
+const coverage = args.indexOf("--coverage") !== -1;
 
 let config = {
   "name": "redux-typescript",
@@ -15,7 +16,7 @@ let config = {
   ]
 };
 
-if (!isWatch) {
+if (!isWatch || coverage) {
   config = Object.assign({}, config, {
     "coverageDirectory": "../reports",
     "collectCoverage": true,
