@@ -1,6 +1,5 @@
 {
   "tslint.autoFixOnSave": true,
-  "jest.pathToConfig": "./config/jest.json",
   "editor.formatOnSave": true,
   "editor.autoIndent": true,
   "editor.insertSpaces": true,
