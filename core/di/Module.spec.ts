@@ -2,7 +2,6 @@ import { Injectable } from "./Injectable";
 import { Module, Mod } from "./Module";
 import { Injector } from "./Injector";
 import { getProperty, setProperty } from "./utils";
-import { Container } from "inversify";
 
 describe("Core Dependency Injection Module", () => {
   // Fixtures
@@ -101,11 +100,6 @@ describe("Core Dependency Injection Module", () => {
     expect(t).toThrow();
   });
 
-  it("should throw exception when metadata is empty", () => {
-    const testMod = new Mod(undefined);
-    expect((testMod as any).metadata).toBeUndefined();
-  });
-
   it("should import module exports", () => {
     @Module({
       exports: [ClsA]
@@ -153,8 +147,41 @@ describe("Core Dependency Injection Module", () => {
 
     setProperty(Dep, "injectableMetadata", null);
     const tMod = getProperty(TestModule, "module");
-    tMod.container = new Container();
     tMod.importDependency(Dep);
     expect(tMod.importedTypes.get(Dep.name)).toBeDefined();
+  });
+
+  it("should import dependency with factory", () => {
+    const factory = jest.fn();
+
+    @Injectable()
+    class Dep2 {}
+
+    @Injectable()
+    class Dep {}
+
+    @Module({
+      imports: [{ factory, dependency: Dep }]
+    })
+    class TestModule {}
+
+    Injector(TestModule).create(Dep);
+    expect(factory).toBeCalled();
+  });
+
+  it("should import dependency with class mapping", () => {
+    @Injectable()
+    class Dep2 {}
+
+    @Injectable()
+    class Dep {}
+
+    @Module({
+      imports: [{ cls: Dep2, dependency: Dep }]
+    })
+    class TestModule {}
+
+    const instance = Injector(TestModule).create(Dep);
+    expect(instance instanceof Dep2).toBe(true);
   });
 });

@@ -10,6 +10,11 @@ export class ModuleMetadata {
   exports?: Array<any>;
 }
 
+export class ImportInfo {
+  dependency: any;
+  factory?: Function;
+}
+
 // tslint:disable-next-line
 export function Module(metadata?: ModuleMetadata) {
   return _modDecorator.bind(metadata);
@@ -33,9 +38,11 @@ export class Mod {
   constructor(private metadata: ModuleMetadata) {
     this.importedTypes = new Map<string, string>();
 
-    if (this.metadata) {
-      this.initContainer();
+    if (!this.metadata) {
+      this.metadata = {};
     }
+
+    this.initContainer();
   }
 
   create(T: any) {
@@ -80,23 +87,44 @@ export class Mod {
   }
 
   private importDependency(dep: any) {
-    const type = dep.name;
-
-    if (type) {
-      this.importedTypes.set(type, dep);
-      const binding = this.container.bind(dep).toSelf();
-
-      const injectableMetadata = getProperty(
-        dep,
-        "injectableMetadata"
-      ) as InjectableMetadata;
-
-      if (injectableMetadata) {
-        this.applyImportMetadata(binding, injectableMetadata);
-      }
+    if (dep.dependency && dep.cls) {
+      this.importClass(dep.dependency.name, dep.dependency, dep.cls, true);
+    } else if (dep.dependency && dep.factory) {
+      this.importClass(dep.dependency.name, dep.dependency, dep.factory);
+    } else if (dep.dependency) {
+      throw `Unable to import ${dep.dependency.name},` +
+        `please specify either a factory or a cls attribute` +
+        `when using this syntax`;
+    } else if (dep.name) {
+      this.importClass(dep.name, dep);
     } else {
-      throw `Unable to import ${dep}`;
+      const modName = getProperty(this, "name");
+      throw `Unable to import ${dep} within ${modName}`;
     }
+  }
+
+  private importClass(type, dep, factoryOrCls?, isCls?) {
+    this.importedTypes.set(type, dep);
+    let binding: any = this.container.bind(dep);
+
+    if (isCls) {
+      binding = binding.to(factoryOrCls);
+    } else if (factoryOrCls) {
+      binding = binding.toFactory(factoryOrCls);
+    } else {
+      binding = binding.toSelf();
+    }
+
+    const injectableMetadata = getProperty(
+      dep,
+      "injectableMetadata"
+    ) as InjectableMetadata;
+
+    if (injectableMetadata) {
+      this.applyImportMetadata(binding, injectableMetadata);
+    }
+
+    return binding;
   }
 
   private applyImportMetadata(binding, metadata: InjectableMetadata): void {
