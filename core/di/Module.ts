@@ -99,7 +99,7 @@ export class Mod {
     }
   }
 
-  private applyImportMetadata(binding, metadata: InjectableMetadata): any {
+  private applyImportMetadata(binding, metadata: InjectableMetadata): void {
     if (metadata.singleton) {
       binding.inSingletonScope();
     }

@@ -1,6 +1,8 @@
 import { Injectable } from "./Injectable";
 import { Module, Mod } from "./Module";
 import { Injector } from "./Injector";
+import { getProperty, setProperty } from "./utils";
+import { Container } from "inversify";
 
 describe("Core Dependency Injection Module", () => {
   // Fixtures
@@ -125,9 +127,7 @@ describe("Core Dependency Injection Module", () => {
     })
     class Singleton {}
 
-    @Injectable({
-      singleton: false
-    })
+    @Injectable()
     class NonSingleton {}
 
     @Module({
@@ -142,5 +142,19 @@ describe("Core Dependency Injection Module", () => {
     const nonSingletonInstance1 = Injector(TestModule).create(NonSingleton);
     const nonSingletonInstance2 = Injector(TestModule).create(NonSingleton);
     expect(nonSingletonInstance1).not.toBe(nonSingletonInstance2);
+  });
+
+  it("should import dependencies when metadata is empty", () => {
+    @Injectable()
+    class Dep {}
+
+    @Module()
+    class TestModule {}
+
+    setProperty(Dep, "injectableMetadata", null);
+    const tMod = getProperty(TestModule, "module");
+    tMod.container = new Container();
+    tMod.importDependency(Dep);
+    expect(tMod.importedTypes.get(Dep.name)).toBeDefined();
   });
 });
