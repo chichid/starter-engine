@@ -118,4 +118,29 @@ describe("Core Dependency Injection Module", () => {
     tm.importModuleExports(new TestParentMod());
     expect(tm.importedTypes.get(ClsA.name)).toBeDefined();
   });
+
+  it("should create singleton", () => {
+    @Injectable({
+      singleton: true
+    })
+    class Singleton {}
+
+    @Injectable({
+      singleton: false
+    })
+    class NonSingleton {}
+
+    @Module({
+      imports: [Singleton, NonSingleton]
+    })
+    class TestModule {}
+
+    const singletonInstance1 = Injector(TestModule).create(Singleton);
+    const singletonInstance2 = Injector(TestModule).create(Singleton);
+    expect(singletonInstance1).toBe(singletonInstance2);
+
+    const nonSingletonInstance1 = Injector(TestModule).create(NonSingleton);
+    const nonSingletonInstance2 = Injector(TestModule).create(NonSingleton);
+    expect(nonSingletonInstance1).not.toBe(nonSingletonInstance2);
+  });
 });

@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import "reflect-metadata";
 import { setProperty } from "./utils";
 
-class InjectableMetadata {
+export class InjectableMetadata {
   singleton?: boolean;
 }
 

@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { Container } from "inversify";
 import { setProperty, getProperty } from "./utils";
+import { InjectableMetadata } from "./Injectable";
 
 export class ModuleMetadata {
   // tslint:disable-next-line
@@ -45,7 +46,7 @@ export class Mod {
       throw `${type} is not declared in module ${getProperty(this, "name")}`;
     }
 
-    return this.container.resolve<typeof T>(T);
+    return this.container.get<typeof T>(T);
   }
 
   private initContainer() {
@@ -83,9 +84,24 @@ export class Mod {
 
     if (type) {
       this.importedTypes.set(type, dep);
-      this.container.bind(dep).toSelf();
+      const binding = this.container.bind(dep).toSelf();
+
+      const injectableMetadata = getProperty(
+        dep,
+        "injectableMetadata"
+      ) as InjectableMetadata;
+
+      if (injectableMetadata) {
+        this.applyImportMetadata(binding, injectableMetadata);
+      }
     } else {
       throw `Unable to import ${dep}`;
+    }
+  }
+
+  private applyImportMetadata(binding, metadata: InjectableMetadata): any {
+    if (metadata.singleton) {
+      binding.inSingletonScope();
     }
   }
 }
