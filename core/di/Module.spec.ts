@@ -44,7 +44,7 @@ describe("Core Dependency Injection Module", () => {
     @Module({
       exports: [ClsA]
     })
-    class TestParentMod { }
+    class TestParentMod {}
 
     const testMod = new Mod({
       imports: [TestParentMod]
@@ -57,7 +57,7 @@ describe("Core Dependency Injection Module", () => {
 
   it("should import a class", () => {
     @Module()
-    class TestModule { };
+    class TestModule {}
 
     const testMod = getProperty(TestModule, "module");
     testMod.importClass = jest.fn();
@@ -66,9 +66,36 @@ describe("Core Dependency Injection Module", () => {
     expect(testMod.importClass).toBeCalledWith(ClsA.name, ClsA);
   });
 
+  it("should import a factory", () => {
+    @Module()
+    class TestModule {}
+
+    const testMod = getProperty(TestModule, "module");
+    testMod.importClass = jest.fn();
+
+    const factory = jest.fn();
+    testMod.importDependency({ factory, dependency: ClsA });
+
+    expect(testMod.importClass).toBeCalledWith(ClsA.name, ClsA, factory);
+  });
+
+  it("should import and map a class", () => {
+    @Module()
+    class TestModule {}
+
+    class TestCls {}
+
+    const testMod = getProperty(TestModule, "module");
+    testMod.importClass = jest.fn();
+
+    testMod.importDependency({ dependency: ClsA, cls: TestCls });
+
+    expect(testMod.importClass).toBeCalledWith(ClsA.name, ClsA, TestCls, true);
+  });
+
   it("should throw exception when trying to import a dependency using the complex syntax with no factory or cls attribute", () => {
     @Module()
-    class TestModule { };
+    class TestModule {}
 
     const testMod = getProperty(TestModule, "module");
     expect(() => testMod.importDependency({ dependency: ClsA })).toThrow();
