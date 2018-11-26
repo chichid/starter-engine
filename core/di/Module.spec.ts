@@ -102,5 +102,8 @@ describe("Core Dependency Injection Module", () => {
   });
 
   // TODO
+  // Test import dependency when not in the module
+
+  // TODO
   // Add more coverage for importClass
 });

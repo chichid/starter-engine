@@ -104,7 +104,6 @@ export class Mod {
   }
 
   private importClass(type, dep, factoryOrCls?, isCls?) {
-    this.importedTypes.set(type, dep);
     let binding: any = this.container.bind(dep);
 
     if (isCls) {
@@ -115,21 +114,27 @@ export class Mod {
       binding = binding.toSelf();
     }
 
-    const injectableMetadata = getProperty(
+    binding = this.applyImportMetadata(dep, binding);
+
+    this.importedTypes.set(type, dep);
+  }
+
+  private applyImportMetadata(dep, binding): void {
+    let mdBinding = binding;
+
+    const metadata = getProperty(
       dep,
       "injectableMetadata"
     ) as InjectableMetadata;
 
-    if (injectableMetadata) {
-      this.applyImportMetadata(binding, injectableMetadata);
+    if (!metadata) {
+      return mdBinding;
     }
 
-    return binding;
-  }
-
-  private applyImportMetadata(binding, metadata: InjectableMetadata): void {
     if (metadata.singleton) {
-      binding.inSingletonScope();
+      mdBinding = mdBinding.inSingletonScope();
     }
+
+    return mdBinding;
   }
 }
