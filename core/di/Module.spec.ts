@@ -100,4 +100,7 @@ describe("Core Dependency Injection Module", () => {
     const testMod = getProperty(TestModule, "module");
     expect(() => testMod.importDependency({ dependency: ClsA })).toThrow();
   });
+
+  // TODO
+  // Add more coverage for importClass
 });
