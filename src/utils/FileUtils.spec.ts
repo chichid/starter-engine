@@ -22,7 +22,6 @@ jest.mock('fs', () => ({
 }));
 
 import { FileUtils } from "./FileUtils";
-import { callbackify } from "util";
 
 describe('FileUtils', () => {
   it('should read file', async () => {
