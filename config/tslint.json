@@ -28,6 +28,9 @@
       "double",
       "avoid-escape",
       "avoid-template"
+    ],
+    "prefer-template": [
+      true
     ]
   },
   "rulesDirectory": []
