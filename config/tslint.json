@@ -7,12 +7,28 @@
     "tslint-config-prettier"
   ],
   "linterOptions": {
-    "exclude": ["./test/TestStarter", "../dist", "../node_modules"]
+    "exclude": [
+      "./test/TestStarter",
+      "../dist",
+      "../node_modules"
+    ]
   },
   "rules": {
     "eofline": false,
-    "indent": [true, "spaces", 2],
-    "import-name": [false]
+    "indent": [
+      true,
+      "spaces",
+      2
+    ],
+    "import-name": [
+      false
+    ],
+    "quotemark": [
+      true,
+      "double",
+      "avoid-escape",
+      "avoid-template"
+    ]
   },
   "rulesDirectory": []
 }
