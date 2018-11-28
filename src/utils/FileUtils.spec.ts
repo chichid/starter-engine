@@ -34,9 +34,13 @@ describe("FileUtils", () => {
   it("should throw when no file exists", async () => {
     const fu = new FileUtils();
     const testPath = "/wrong.txt";
-    let error;
-    try { await fu.readFile(testPath) } catch (e) { error = e };
-    expect(error).toEqual(MOCK_READ_FILE_ERROR);
+
+    expect.assertions(1);
+    try {
+      await fu.readFile(testPath)
+    } catch (e) {
+      expect(e).toEqual(MOCK_READ_FILE_ERROR);
+    };
   });
 
   it("should check if file exists", async () => {
