@@ -1,10 +1,10 @@
-const mockReadFileContent = "Test Content";
-const mockReadFileError = "Error Reading The File";
+const MOCK_READ_FILE_CONTENT = "Test Content";
+const MOCK_READ_FILE_ERROR = "Error Reading The File";
 const readFile = jest.fn((path, callback) => {
   if (path === "/some/test/path.txt") {
-    callback(null, mockReadFileContent);
+    callback(null, MOCK_READ_FILE_CONTENT);
   } else {
-    callback(mockReadFileError);
+    callback(MOCK_READ_FILE_ERROR);
   }
 });
 
@@ -28,19 +28,21 @@ describe("FileUtils", () => {
     const fu = new FileUtils();
     const testPath = "/some/test/path.txt";
     const content = await fu.readFile(testPath);
-    expect(content).toBe(mockReadFileContent);
+    expect(content).toBe(MOCK_READ_FILE_CONTENT);
   });
 
   it("should throw when no file exists", async () => {
     const fu = new FileUtils();
     const testPath = "/wrong.txt";
-    expect(fu.readFile(testPath)).rejects.toEqual(mockReadFileError);
+    let error;
+    try { await fu.readFile(testPath) } catch (e) { error = e };
+    expect(error).toEqual(MOCK_READ_FILE_ERROR);
   });
 
   it("should check if file exists", async () => {
     const fu = new FileUtils();
-    expect(fu.exists("/some/existing/path.txt")).resolves.toEqual(true);
-    expect(fu.exists("/some/non-existing/path.txt")).resolves.toEqual(false);
+    expect(await fu.exists("/some/existing/path.txt")).toEqual(true);
+    expect(await fu.exists("/some/non-existing/path.txt")).toEqual(false);
   });
 
   it("should get the extension of a path or filename", () => {

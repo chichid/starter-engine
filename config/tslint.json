@@ -8,6 +8,7 @@
     "tslint-config-prettier"
   ],
   "linterOptions": {
+    "type-check": true,
     "exclude": [
       "./test/TestStarter",
       "../dist",
@@ -19,6 +20,7 @@
     "no-console": false,
     "max-classes-per-file": false,
     "object-literal-sort-keys": false,
+    "no-floating-promises": true,
     "indent": [
       true,
       "spaces",
