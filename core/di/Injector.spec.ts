@@ -16,12 +16,12 @@ describe("Injector", () => {
 
   class TestModule2 { }
 
-  it('should create a module with the Injector', () => {
+  it("should create a module with the Injector", () => {
     const instance = Injector(TestModule).create(Cls);
     expect(instance).toBeDefined();
   });
 
-  it('should throw excepton when class is not part of the module', () => {
+  it("should throw excepton when class is not part of the module", () => {
     let exception;
 
     try {

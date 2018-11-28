@@ -1,6 +1,6 @@
 import { TemplateLoader } from "./TemplateLoader";
 import { Module, Injectable, Inject, Injector } from "@core/di";
-import { UtilsModule, FileUtils } from "../utils";
+import { FileUtils } from "../utils";
 
 describe("TemplateLoader", () => {
   const TEST_PATH = "/some/path" + "test";

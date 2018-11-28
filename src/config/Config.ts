@@ -50,7 +50,7 @@ export class Config {
     } catch (e) {
       console.warn(
         `Unable to parse the configuration file at path ${path}.` +
-          `Using the default configurations.`
+          "Using the default configurations."
       );
       return DEFAULT_CONFIG;
     }

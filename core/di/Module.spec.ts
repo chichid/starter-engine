@@ -29,7 +29,7 @@ describe("Core Dependency Injection Module", () => {
     expect(testMod.exports).toEqual([ClsA]);
   });
 
-  it('should create a module dependency', () => {
+  it("should create a module dependency", () => {
     @Module()
     class TestModule { }
 
@@ -107,7 +107,7 @@ describe("Core Dependency Injection Module", () => {
     expect(testMod.importClass).toBeCalledWith(ClsA.name, ClsA, TestCls, true);
   });
 
-  it('should importClass', () => {
+  it("should importClass", () => {
     @Module()
     class TestModule { }
 
@@ -154,7 +154,7 @@ describe("Core Dependency Injection Module", () => {
     expect(toFactory).not.toBeCalled();
   });
 
-  it('should apply import metadata', () => {
+  it("should apply import metadata", () => {
     class TestCls { }
 
     @Module()

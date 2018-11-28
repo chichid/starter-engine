@@ -1,7 +1,7 @@
 import { setProperty, getProperty } from "./utils";
 
 describe("utils", () => {
-  it('should set a property in a function', () => {
+  it("should set a property in a function", () => {
     const fixture = function () { };
     const testValue = "value";
     const testKey = "myprop";
@@ -10,7 +10,7 @@ describe("utils", () => {
     expect(prop).toBe(testValue);
   });
 
-  it('should set a property in an object', () => {
+  it("should set a property in an object", () => {
     const fixture = {};
     const testValue = "value";
     const testKey = "myprop";

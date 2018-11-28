@@ -1,7 +1,7 @@
 import { Template } from "./Template";
 
-describe('Template', () => {
-  it('should create a template', () => {
+describe("Template", () => {
+  it("should create a template", () => {
     const testContent = "some content {{data1}} {{data2.data21}}";
     const testModel = {}
     const template = new Template(testContent, testModel);
@@ -10,7 +10,7 @@ describe('Template', () => {
     expect(template.model).toEqual(testModel);
   });
 
-  it('should compile a template', () => {
+  it("should compile a template", () => {
     const testContent = "some content {{data1}} {{data2.data21}}";
     const testModel = {}
     const template = new Template(testContent, testModel) as any;
@@ -18,7 +18,7 @@ describe('Template', () => {
     expect(template.compiledTemplate).toBeDefined();
   });
 
-  it('should render the template', () => {
+  it("should render the template", () => {
     const testContent = "some content {{data1}} {{data2.data21}}";
     const testModel = {
       "data1": "some string",

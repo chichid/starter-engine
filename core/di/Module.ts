@@ -93,8 +93,8 @@ export class Mod {
       this.importClass(dep.dependency.name, dep.dependency, dep.factory);
     } else if (dep.dependency) {
       throw `Unable to import ${dep.dependency.name},` +
-        `please specify either a factory or a cls attribute` +
-        `when using this syntax`;
+        "please specify either a factory or a cls attribute" +
+        "when using this syntax";
     } else if (dep.name) {
       this.importClass(dep.name, dep);
     } else {
