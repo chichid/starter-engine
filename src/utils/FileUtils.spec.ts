@@ -42,4 +42,10 @@ describe("FileUtils", () => {
     expect(fu.exists("/some/existing/path.txt")).resolves.toEqual(true);
     expect(fu.exists("/some/non-existing/path.txt")).resolves.toEqual(false);
   });
+
+  it("should get the extension of a path or filename", () => {
+    const fu = new FileUtils();
+    expect(fu.ext("/some/path/file.ext")).toEqual(".ext");
+    expect(fu.ext("file.ext")).toEqual(".ext");
+  });
 });

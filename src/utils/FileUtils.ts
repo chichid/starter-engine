@@ -1,3 +1,4 @@
+import { extname } from "path";
 import { readFile, exists } from "fs";
 import { Injectable } from "@core/di";
 
@@ -13,6 +14,10 @@ export class FileUtils {
     return new Promise<boolean>((r, j) => {
       this.existsImpl(path, r, j);
     });
+  }
+
+  ext(path: string): string {
+    return extname(path);
   }
 
   private existsImpl(path: string, resolve: Function, reject: Function) {
