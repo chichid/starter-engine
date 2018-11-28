@@ -1,11 +1,11 @@
+import { Injectable } from "./Injectable";
 import { Mod, Module } from "./Module";
 import { getProperty, setProperty } from "./utils";
-import { Injectable } from "./Injectable";
 
 describe("Core Dependency Injection Module", () => {
   // Fixtures
   class ClsA {
-    methodA() {
+    public methodA() {
       return "methodA";
     }
   }

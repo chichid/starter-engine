@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { setProperty } from "./utils";
 
 export class InjectableMetadata {
-  singleton?: boolean;
+  public singleton?: boolean;
 }
 
 // tslint:disable-next-line

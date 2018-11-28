@@ -2,13 +2,13 @@ import { Inject } from "./Inject";
 
 // Fixtures
 class ClsA {
-  methodA = jest.fn();
+  public methodA = jest.fn();
 }
 
 class ClsB {
   private clsA: ClsA;
 
-  methodB() {
+  public methodB() {
     this.clsA.methodA();
   }
 }

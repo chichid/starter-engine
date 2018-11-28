@@ -1,5 +1,5 @@
-import { FileUtils } from "./FileUtils";
 import { Module } from "@core/di";
+import { FileUtils } from "./FileUtils";
 
 export { FileUtils };
 

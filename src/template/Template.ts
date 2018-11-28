@@ -7,16 +7,16 @@ export class Template {
     return this.templateContent;
   }
 
-  get model(): Object {
+  get model(): object {
     return this.templateModel;
   }
 
   constructor(
     private templateContent: string,
-    private templateModel: Object
+    private templateModel: object
   ) { }
 
-  render(): String {
+  public render(): string {
     if (!this.compiledTemplate) {
       this.compileTemplate();
     }

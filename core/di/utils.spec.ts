@@ -1,8 +1,8 @@
-import { setProperty, getProperty } from "./utils";
+import { getProperty, setProperty } from "./utils";
 
 describe("utils", () => {
   it("should set a property in a function", () => {
-    const fixture = function () { };
+    const fixture = () => ({});
     const testValue = "value";
     const testKey = "myprop";
     setProperty(fixture, testKey, testValue);

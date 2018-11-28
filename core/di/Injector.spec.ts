@@ -1,6 +1,6 @@
-import { Module } from "./Module";
 import { Injectable } from "./Injectable";
 import { Injector } from "./Injector";
+import { Module } from "./Module";
 
 describe("Injector", () => {
   @Injectable()

@@ -1,12 +1,12 @@
-import { Injectable, Inject } from "@core/di";
-import { ConfigKey } from "./ConfigKeys";
+import { Inject, Injectable } from "@core/di";
 import { FileUtils } from "../utils";
-import { KeyValue } from "./types";
+import { ConfigKey } from "./ConfigKeys";
 import {
   DEFAULT_CONFIG,
-  DEFAULT_CONFIG_PATH,
-  DEFAULT_CONFIG_FILE
+  DEFAULT_CONFIG_FILE,
+  DEFAULT_CONFIG_PATH
 } from "./Defaults";
+import { KeyValue } from "./types";
 
 @Injectable()
 export class Config {
@@ -24,7 +24,7 @@ export class Config {
   }
 
   public getBasePath(): string {
-    return process.env["config"] || DEFAULT_CONFIG_PATH;
+    return process.env.config || DEFAULT_CONFIG_PATH;
   }
 
   public getConfigFilePath(): string {

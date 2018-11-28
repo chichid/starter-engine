@@ -1,5 +1,5 @@
 import { Injector } from "@core/di";
-import { ConfigModule, ConfigKey, Config } from ".";
+import { Config, ConfigKey, ConfigModule } from ".";
 
 describe("Config", () => {
   const getConfigTestKey = (key: string) => {
@@ -18,23 +18,23 @@ describe("Config", () => {
   });
 
   it("should get the default configuration file path", () => {
-    process.env["config"] = "";
+    process.env.config = "";
     const instance = fixture();
     let file = instance.getConfigFilePath();
     expect(file).toBe("./.staengrc");
 
-    process.env["config"] = "./test/staengrc/test-read";
+    process.env.config = "./test/staengrc/test-read";
     file = instance.getConfigFilePath();
     expect(file).toBe("./test/staengrc/test-read/.staengrc");
   });
 
   it("should get the base path", () => {
-    process.env["config"] = "";
+    process.env.config = "";
     const instance = fixture();
     let path = instance.getBasePath();
     expect(path).toBe(".");
 
-    process.env["config"] = "./test/staengrc/test-read";
+    process.env.config = "./test/staengrc/test-read";
     path = instance.getBasePath();
     expect(path).toBe("./test/staengrc/test-read");
   });
@@ -44,8 +44,10 @@ describe("Config", () => {
     const instance = fixture();
 
     // wrap the load function
-    const loadFunc = instance["load"];
-    instance["load"] = function () {
+    const loadFunc = (instance as any).load;
+
+    // tslint:disable-next-line:only-arrow-functions
+    (instance as any).load = function () {
       loadCallCount = loadCallCount + 1;
       return loadFunc.apply(instance, arguments);
     };
@@ -60,14 +62,14 @@ describe("Config", () => {
 
   it("should return the default folder config", async () => {
     const instance = fixture();
-    process.env["config"] = "./test/staengrc/test-read";
+    process.env.config = "./test/staengrc/test-read";
     const config = await instance.get(getConfigTestKey("TEST_KEY_2"));
     expect(config).toBe("Test Value 2");
   });
 
   it("should detect wrong configuration", async () => {
     const instance = fixture();
-    process.env["config"] = "./test/staengrc/test-error";
+    process.env.config = "./test/staengrc/test-error";
     console.warn = jest.fn();
     const config = await instance.get(getConfigTestKey("TEST_KEY_2"));
     expect(config).not.toBeDefined();

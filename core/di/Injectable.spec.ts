@@ -5,9 +5,9 @@ jest.mock("inversify", () => ({
 }));
 
 import { Injectable } from "./Injectable";
-import { getProperty } from "./utils";
 import { Injector } from "./Injector";
 import { Module } from "./Module";
+import { getProperty } from "./utils";
 
 describe("Injectable", () => {
   it("should create injectable", () => {

@@ -1,7 +1,7 @@
-import "reflect-metadata";
 import { Container } from "inversify";
-import { setProperty, getProperty } from "./utils";
+import "reflect-metadata";
 import { InjectableMetadata } from "./Injectable";
+import { getProperty, setProperty } from "./utils";
 
 export class ModuleMetadata {
   // tslint:disable-next-line
@@ -11,8 +11,8 @@ export class ModuleMetadata {
 }
 
 export class ImportInfo {
-  dependency: any;
-  factory?: Function;
+  public dependency: any;
+  public factory?: () => any;
 }
 
 // tslint:disable-next-line
@@ -45,12 +45,12 @@ export class Mod {
     this.initContainer();
   }
 
-  create(T: any) {
+  public create(T: any) {
     const type = T.name;
     const moduleHasType: boolean = !!this.importedTypes.get(type);
 
     if (!moduleHasType) {
-      throw `${type} is not declared in module ${getProperty(this, "name")}`;
+      throw new Error(`${type} is not declared in module ${getProperty(this, "name")}`);
     }
 
     return this.container.get<typeof T>(T);
@@ -92,14 +92,14 @@ export class Mod {
     } else if (dep.dependency && dep.factory) {
       this.importClass(dep.dependency.name, dep.dependency, dep.factory);
     } else if (dep.dependency) {
-      throw `Unable to import ${dep.dependency.name},` +
+      throw new Error(`Unable to import ${dep.dependency.name},` +
         "please specify either a factory or a cls attribute" +
-        "when using this syntax";
+        "when using this syntax");
     } else if (dep.name) {
       this.importClass(dep.name, dep);
     } else {
       const modName = getProperty(this, "name");
-      throw `Unable to import ${dep} within ${modName}`;
+      throw new Error(`Unable to import ${dep} within ${modName}`);
     }
   }
 

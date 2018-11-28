@@ -1,18 +1,18 @@
-import { Module, Injectable, Injector } from ".";
-import { setProperty, getProperty } from "./utils";
+import { Injectable, Injector, Module } from ".";
+import { getProperty, setProperty } from "./utils";
 
 describe("core/di e2e tests", () => {
   // Fixtures
   @Injectable()
   class ClsA {
-    methodA() {
+    public methodA() {
       return "methodA";
     }
   }
 
   @Injectable()
   class ClsB {
-    methodB() {
+    public methodB() {
       return true;
     }
   }
