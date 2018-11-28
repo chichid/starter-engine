@@ -39,6 +39,7 @@
     "webpack-merge": "~4.1.4"
   },
   "dependencies": {
+    "handlebars": "^4.0.12",
     "inversify": "^5.0.1"
   }
 }
