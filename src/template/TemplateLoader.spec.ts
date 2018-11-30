@@ -7,31 +7,6 @@ describe("TemplateLoader", () => {
   const TEST_CONTENT = "some content template {{content}}";
   const TEST_MODEL = "export function root() {}";
 
-
-  @Injectable()
-  class MockFileUtils extends FileUtils {
-    public async readFile(path: string) {
-      if (path && path.indexOf(".model") !== -1) {
-        return TEST_MODEL;
-      }
-
-      return TEST_CONTENT;
-    }
-
-    public async exists(path: string) {
-      return path === TEST_PATH;
-    }
-  }
-
-  // tslint:disable-next-line:max-classes-per-file
-  @Module({
-    imports: [
-      { dependency: FileUtils, cls: MockFileUtils },
-      TemplateLoader
-    ]
-  })
-  class TestingModule { }
-
   it("should create a loader", () => {
     const loader = Injector(TestingModule).create(TemplateLoader);
     expect(loader).toBeDefined();
@@ -58,4 +33,29 @@ describe("TemplateLoader", () => {
     model = await loader.loadModel(TEST_PATH);
     expect(model).toBeDefined();
   });
+
+  // Stubs
+  @Injectable()
+  class MockFileUtils extends FileUtils {
+    public async readFile(path: string) {
+      if (path && path.indexOf(".model") !== -1) {
+        return TEST_MODEL;
+      }
+
+      return TEST_CONTENT;
+    }
+
+    public async exists(path: string) {
+      return path === TEST_PATH;
+    }
+  }
+
+  // tslint:disable-next-line:max-classes-per-file
+  @Module({
+    imports: [
+      { dependency: FileUtils, cls: MockFileUtils },
+      TemplateLoader
+    ]
+  })
+  class TestingModule { }
 });
