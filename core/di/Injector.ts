@@ -1,9 +1,9 @@
-import { Mod } from "./Module";
+import { ModuleResolver } from "./ModuleResolver";
 import { getProperty, setProperty } from "./utils";
 
 // tslint:disable-next-line
 export function Injector(mod: any): Inj {
-  const m = getProperty(mod, "module") as Mod;
+  const m = getProperty(mod, "module") as ModuleResolver;
 
   if (!m) {
     throw new Error(`Unable to get injector for module ${mod.name}`);
@@ -15,7 +15,7 @@ export function Injector(mod: any): Inj {
 }
 
 class Inj {
-  constructor(private module: Mod) { }
+  constructor(private module: ModuleResolver) {}
   public create(T: any) {
     return this.module.create(T);
   }

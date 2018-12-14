@@ -1,5 +1,5 @@
-import { Injectable } from "./Injectable";
-import { Mod, Module } from "./Module";
+import { Module } from "./Module";
+import { ModuleResolver } from "./ModuleResolver";
 import { getProperty, setProperty } from "./utils";
 
 describe("Core Dependency Injection Module", () => {
@@ -11,18 +11,18 @@ describe("Core Dependency Injection Module", () => {
   }
 
   it("create a module", () => {
-    const mod = new Mod({
+    const mod = new ModuleResolver({
       imports: [ClsA],
       exports: []
     });
     expect(mod).toBeDefined();
 
-    const emptyMod = new Mod(null);
+    const emptyMod = new ModuleResolver(null);
     expect(emptyMod).toBeDefined();
   });
 
   it("should get exports", () => {
-    const testMod = new Mod({
+    const testMod = new ModuleResolver({
       exports: [ClsA]
     });
 
@@ -31,7 +31,7 @@ describe("Core Dependency Injection Module", () => {
 
   it("should create a module dependency", () => {
     @Module()
-    class TestModule { }
+    class TestModule {}
 
     const testMod = getProperty(TestModule, "module");
     expect(() => testMod.create(ClsA)).toThrow();
@@ -43,7 +43,7 @@ describe("Core Dependency Injection Module", () => {
   });
 
   it("should throw exception when unable to import dependencies", () => {
-    const testMod = new Mod({
+    const testMod = new ModuleResolver({
       exports: [ClsA]
     });
 
@@ -58,9 +58,9 @@ describe("Core Dependency Injection Module", () => {
     @Module({
       exports: [ClsA]
     })
-    class TestParentMod { }
+    class TestParentMod {}
 
-    const testMod = new Mod({
+    const testMod = new ModuleResolver({
       imports: [TestParentMod]
     });
 
@@ -71,7 +71,7 @@ describe("Core Dependency Injection Module", () => {
 
   it("should import a class", () => {
     @Module()
-    class TestModule { }
+    class TestModule {}
 
     const testMod = getProperty(TestModule, "module");
     testMod.importClass = jest.fn();
@@ -82,7 +82,7 @@ describe("Core Dependency Injection Module", () => {
 
   it("should import a factory", () => {
     @Module()
-    class TestModule { }
+    class TestModule {}
 
     const testMod = getProperty(TestModule, "module");
     testMod.importClass = jest.fn();
@@ -95,9 +95,9 @@ describe("Core Dependency Injection Module", () => {
 
   it("should import and map a class", () => {
     @Module()
-    class TestModule { }
+    class TestModule {}
 
-    class TestCls { }
+    class TestCls {}
 
     const testMod = getProperty(TestModule, "module");
 
@@ -109,7 +109,7 @@ describe("Core Dependency Injection Module", () => {
 
   it("should importClass", () => {
     @Module()
-    class TestModule { }
+    class TestModule {}
 
     const testMod = getProperty(TestModule, "module");
 
@@ -123,7 +123,9 @@ describe("Core Dependency Injection Module", () => {
       toFactory = jest.fn();
       toSelf = jest.fn();
       testMod.container.bind = jest.fn(() => ({
-        to, toFactory, toSelf
+        to,
+        toFactory,
+        toSelf
       }));
     };
 
@@ -146,7 +148,7 @@ describe("Core Dependency Injection Module", () => {
 
     // Test import with class mapping
     resetBindingFixture();
-    class ClsB { }
+    class ClsB {}
     testMod.importClass(ClsA.name, ClsA, ClsB, true);
     expect(testMod.container.bind).toBeCalledWith(ClsA);
     expect(toSelf).not.toBeCalled();
@@ -155,10 +157,10 @@ describe("Core Dependency Injection Module", () => {
   });
 
   it("should apply import metadata", () => {
-    class TestCls { }
+    class TestCls {}
 
     @Module()
-    class TestModule { }
+    class TestModule {}
 
     const testMod = getProperty(TestModule, "module");
 
@@ -181,17 +183,17 @@ describe("Core Dependency Injection Module", () => {
     // Test Singleton property
     resetBindingFixture();
     setProperty(TestCls, "injectableMetadata", { singleton: false });
-    testMod.applyImportMetadata(TestCls, binding)
+    testMod.applyImportMetadata(TestCls, binding);
     expect(inSingletonScope).not.toBeCalled();
 
     setProperty(TestCls, "injectableMetadata", { singleton: true });
-    testMod.applyImportMetadata(TestCls, binding)
+    testMod.applyImportMetadata(TestCls, binding);
     expect(inSingletonScope).toBeCalled();
   });
 
   it("should throw exception when trying to import a dependency using the complex syntax with no factory or cls attribute", () => {
     @Module()
-    class TestModule { }
+    class TestModule {}
 
     const testMod = getProperty(TestModule, "module");
     expect(() => testMod.importDependency({ dependency: ClsA })).toThrow();
