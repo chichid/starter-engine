@@ -1,6 +1,6 @@
 export class ModuleMetadata {
   // tslint:disable-next-line
-  imports?: Array<any>;
+  providers?: Array<any>;
   // tslint:disable-next-line
   exports?: Array<any>;
 }

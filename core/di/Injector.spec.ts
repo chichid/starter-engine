@@ -4,17 +4,17 @@ import { Module } from "./Module";
 
 describe("Injector", () => {
   @Injectable()
-  class Cls { }
+  class Cls {}
 
   @Module({
-    imports: [Cls]
+    providers: [Cls]
   })
-  class TestModule { }
+  class TestModule {}
 
   @Injectable()
-  class Cls2 { }
+  class Cls2 {}
 
-  class TestModule2 { }
+  class TestModule2 {}
 
   it("should create a module with the Injector", () => {
     const instance = Injector(TestModule).create(Cls);

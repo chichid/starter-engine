@@ -6,7 +6,7 @@ import { ConfigKey } from "./ConfigKeys";
 export { Config, ConfigKey };
 
 @Module({
-  imports: [UtilsModule, Config],
+  providers: [UtilsModule, Config],
   exports: [Config]
 })
 export class ConfigModule {}

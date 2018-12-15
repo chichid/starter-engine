@@ -52,10 +52,7 @@ describe("TemplateLoader", () => {
 
   // tslint:disable-next-line:max-classes-per-file
   @Module({
-    imports: [
-      { dependency: FileUtils, cls: MockFileUtils },
-      TemplateLoader
-    ]
+    providers: [{ dependency: FileUtils, cls: MockFileUtils }, TemplateLoader]
   })
-  class TestingModule { }
+  class TestingModule {}
 });

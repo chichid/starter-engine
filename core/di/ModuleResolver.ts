@@ -41,7 +41,7 @@ export class ModuleResolver {
   }
 
   private processImports() {
-    const imports = this.metadata.imports;
+    const imports = this.metadata.providers;
 
     if (!imports) {
       return;

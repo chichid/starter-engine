@@ -4,7 +4,7 @@ describe("ModuleMetadata", () => {
   it("should create module metadata", () => {
     const fixture = new ModuleMetadata();
     fixture.exports = [];
-    fixture.imports = [];
+    fixture.providers = [];
     expect(fixture).toBeDefined();
   });
 });

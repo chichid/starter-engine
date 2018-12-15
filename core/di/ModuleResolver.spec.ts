@@ -12,7 +12,7 @@ describe("Core Dependency Injection Module", () => {
 
   it("create a module", () => {
     const mod = new ModuleResolver({
-      imports: [ClsA],
+      providers: [ClsA],
       exports: []
     });
     expect(mod).toBeDefined();
@@ -61,7 +61,7 @@ describe("Core Dependency Injection Module", () => {
     class TestParentMod {}
 
     const testMod = new ModuleResolver({
-      imports: [TestParentMod]
+      providers: [TestParentMod]
     });
 
     const tm = testMod as any;

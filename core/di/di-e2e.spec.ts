@@ -18,12 +18,12 @@ describe("core/di e2e tests", () => {
   }
 
   @Injectable()
-  class ClsC { }
+  class ClsC {}
 
   // Tests
   it("should create an empty module module", () => {
     @Module({})
-    class ModA { }
+    class ModA {}
 
     const mod = new ModA();
     expect(mod).toBeDefined();
@@ -31,9 +31,9 @@ describe("core/di e2e tests", () => {
 
   it("should create a module with an import", () => {
     @Module({
-      imports: [ClsA, ClsB]
+      providers: [ClsA, ClsB]
     })
-    class ModA { }
+    class ModA {}
     const modA = new ModA();
     expect(modA).toBeDefined();
 
@@ -49,15 +49,15 @@ describe("core/di e2e tests", () => {
 
   it("should create a module that imports another module", () => {
     @Module({
-      imports: [ClsA, ClsC],
+      providers: [ClsA, ClsC],
       exports: [ClsA]
     })
-    class ModA { }
+    class ModA {}
 
     @Module({
-      imports: [ModA, ClsB]
+      providers: [ModA, ClsB]
     })
-    class ModB { }
+    class ModB {}
 
     expect(Injector(ModA).create(ClsA)).toBeDefined();
     expect(Injector(ModA).create(ClsC)).toBeDefined();
@@ -82,15 +82,15 @@ describe("core/di e2e tests", () => {
     @Injectable({
       singleton: true
     })
-    class Singleton { }
+    class Singleton {}
 
     @Injectable()
-    class NonSingleton { }
+    class NonSingleton {}
 
     @Module({
-      imports: [Singleton, NonSingleton]
+      providers: [Singleton, NonSingleton]
     })
-    class TestModule { }
+    class TestModule {}
 
     const singletonInstance1 = Injector(TestModule).create(Singleton);
     const singletonInstance2 = Injector(TestModule).create(Singleton);
@@ -105,15 +105,15 @@ describe("core/di e2e tests", () => {
     const factory = jest.fn();
 
     @Injectable()
-    class Dep2 { }
+    class Dep2 {}
 
     @Injectable()
-    class Dep { }
+    class Dep {}
 
     @Module({
-      imports: [{ factory, dependency: Dep }]
+      providers: [{ factory, dependency: Dep }]
     })
-    class TestModule { }
+    class TestModule {}
 
     Injector(TestModule).create(Dep);
     expect(factory).toBeCalled();
@@ -121,15 +121,15 @@ describe("core/di e2e tests", () => {
 
   it("should import dependency with class mapping", () => {
     @Injectable()
-    class Dep2 { }
+    class Dep2 {}
 
     @Injectable()
-    class Dep { }
+    class Dep {}
 
     @Module({
-      imports: [{ cls: Dep2, dependency: Dep }]
+      providers: [{ cls: Dep2, dependency: Dep }]
     })
-    class TestModule { }
+    class TestModule {}
 
     const instance = Injector(TestModule).create(Dep);
     expect(instance instanceof Dep2).toBe(true);
