@@ -1,12 +1,11 @@
 import { Module } from "@core/di";
-import { UtilsModule } from "../utils";
 import { Config } from "./Config";
 import { ConfigKey } from "./ConfigKeys";
+import UtilsModule from "../utils";
 
 export { Config, ConfigKey };
 
-@Module({
+export default Module({
   imports: [UtilsModule],
-  providers: [Config]
-})
-export class ConfigModule {}
+  exports: [Config]
+});

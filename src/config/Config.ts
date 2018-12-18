@@ -1,18 +1,16 @@
-import { Inject, Injectable } from "@core/di";
-import { FileUtils } from "../utils";
+import { Injectable, Inject } from "@core/di";
 import { ConfigKey } from "./ConfigKeys";
+import { FileUtils } from "../utils";
+import { KeyValue } from "./types";
 import {
   DEFAULT_CONFIG,
-  DEFAULT_CONFIG_FILE,
-  DEFAULT_CONFIG_PATH
+  DEFAULT_CONFIG_PATH,
+  DEFAULT_CONFIG_FILE
 } from "./Defaults";
-import { KeyValue } from "./types";
 
 @Injectable()
 export class Config {
-  @Inject
-  private fileUtils: FileUtils;
-
+  @Inject private fileUtils: FileUtils;
   private cache: KeyValue;
 
   public async get<T>(key: ConfigKey) {
@@ -26,7 +24,7 @@ export class Config {
   }
 
   public getBasePath(): string {
-    return process.env.config || DEFAULT_CONFIG_PATH;
+    return process.env["config"] || DEFAULT_CONFIG_PATH;
   }
 
   public getConfigFilePath(): string {
@@ -47,8 +45,9 @@ export class Config {
       const parsedContent = JSON.parse(content);
       const keys = Object.keys(parsedContent);
       const keyValues = keys.map(k => [k, parsedContent[k]]) as any;
-      const kv = keyValues as ReadonlyArray<[string, string]>;
-      return new Map<string, string>(kv);
+      return new Map<string, string>(keyValues as ReadonlyArray<
+        [string, string]
+      >);
     } catch (e) {
       console.warn(
         `Unable to parse the configuration file at path ${path}.` +

@@ -1,34 +1,23 @@
-import { Inject, Injectable } from "@core/di";
-import { FileUtils } from "../utils";
 import { Template } from "./Template";
+import { FileUtils } from "../utils/FileUtils";
+import { Config } from "../config/index";
+import { resolve } from "path";
 
-const MODEL_FILE_EXT = "model.ts";
-
-@Injectable()
 export class TemplateLoader {
-  @Inject
-  private fileUtils: FileUtils;
+  constructor(private template: Template) {}
 
-  public async loadTemplate(path: string): Promise<Template> {
-    const templateContent = await this.fileUtils.readFile(path);
-    const template = new Template(templateContent, null);
-    return template;
+  async load(): Promise<string> {
+    // TODO implement
+    // const path = await this.resolveTemplatePath();
+    // const content = await FileUtils.readFile(path);
+    // return content;
+    return "";
   }
 
-  public async loadModel(templatePath: string) {
-    const modelFile = this.getModelFile(templatePath);
-    const fileExists = await this.fileUtils.exists(modelFile);
-
-    if (fileExists) {
-      return await import(modelFile);
-    }
-
-    return null;
-  }
-
-  private getModelFile(templatePath: string) {
-    const ext = this.fileUtils.ext(templatePath);
-    const fileWithNoExt = templatePath.replace(ext, "");
-    return `${fileWithNoExt}.${MODEL_FILE_EXT}`;
+  private async resolveTemplatePath() {
+    // TODO implement
+    // const baseFolder = Config.getConfig().getBasePath();
+    // const path = resolve(baseFolder, this.template.path);
+    // return path;
   }
 }

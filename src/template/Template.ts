@@ -1,30 +1,24 @@
-import * as HandleBars from "handlebars";
+import { TemplateLoader } from "./TemplateLoader";
+import { TemplateRenderer } from "./TemplateRenderer";
 
 export class Template {
-  private compiledTemplate: any = null;
-
-  get content(): string {
-    return this.templateContent;
+  get path(): string {
+    return this.path;
   }
 
-  get model(): object {
-    return this.templateModel;
+  get model(): Object {
+    return this.model;
   }
 
-  constructor(
-    private templateContent: string,
-    private templateModel: object
-  ) { }
+  constructor(private templatePath: string, private templateModel: Object) {}
 
-  public render(): string {
-    if (!this.compiledTemplate) {
-      this.compileTemplate();
-    }
-
-    return this.compiledTemplate(this.model);
+  async load(): Promise<string> {
+    const loader = new TemplateLoader(this);
+    return loader.load();
   }
 
-  private compileTemplate() {
-    this.compiledTemplate = HandleBars.compile(this.templateContent);
+  async render() {
+    const renderer = new TemplateRenderer(this);
+    return renderer.render();
   }
 }

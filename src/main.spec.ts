@@ -1,1 +1,1 @@
-test("main", () => undefined);
+test("main", () => {});
