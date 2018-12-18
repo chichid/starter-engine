@@ -1,65 +1,21 @@
-import { Container } from "inversify";
-import "reflect-metadata";
+import { MetaKey } from "./Constants";
+import { ModuleMetadata } from "./ModuleMetadata";
+import { ModuleResolver } from "./ModuleResolver";
+import { setProperty } from "./utils";
 
-class ModuleMetadata {
-  // tslint:disable-next-line
-  imports?: Array<any> = [];
-  // tslint:disable-next-line
-  exports?: Array<any> = [];
+// tslint:disable-next-line
+export function Module(metadata?: ModuleMetadata) {
+  // TODO refactor to send the metadata without bind.
+  return _modDecorator.bind(metadata);
 }
 
 // tslint:disable-next-line
-export function Module(metadata: ModuleMetadata): Mod {
-  return new Mod(metadata);
-}
+export function _modDecorator(target: any) {
+  const metadata = (this as any) || {};
+  metadata.moduleName = target.name;
 
-export class Mod {
-  private container: Container;
+  const mod = new ModuleResolver(metadata);
+  setProperty(target, MetaKey.MODULE_RESOLVER, mod);
 
-  get exports() {
-    return this.metadata.exports;
-  }
-
-  constructor(private metadata: ModuleMetadata) {
-    if (this.metadata) {
-      this.initContainer();
-    }
-  }
-
-  create(T: any) {
-    return this.container.resolve<typeof T>(T);
-  }
-
-  private initContainer() {
-    this.container = new Container();
-    this.processImports();
-  }
-
-  private processImports() {
-    const imports = this.metadata.imports;
-
-    if (!imports) {
-      return;
-    }
-
-    for (const imp of imports) {
-      if (imp instanceof Mod) {
-        this.importModuleExports(imp as Mod);
-      } else {
-        this.importDependency(imp);
-      }
-    }
-  }
-
-  private importModuleExports(mod: Mod) {
-    if (mod && mod.metadata && mod.metadata.exports) {
-      for (const modImport of mod.metadata.exports) {
-        this.importDependency(modImport);
-      }
-    }
-  }
-
-  private importDependency(dep: any) {
-    this.container.bind(dep).toSelf();
-  }
+  return target;
 }
