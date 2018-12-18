@@ -110,34 +110,65 @@ describe("core/di e2e tests", () => {
   it("should provide dependency with factory", () => {
     const factory = jest.fn();
 
-    @Injectable()
-    class Dep2 {}
-
-    @Injectable()
-    class Dep {}
-
     @Module({
-      providers: [{ factory, dependency: Dep }]
+      providers: [{ factory, dependency: ClsA }]
     })
     class TestModule {}
 
-    Injector(TestModule).create(Dep);
+    Injector(TestModule).create(ClsA);
     expect(factory).toBeCalled();
   });
 
   it("should provide dependency with class mapping", () => {
-    @Injectable()
-    class Dep2 {}
-
-    @Injectable()
-    class Dep {}
-
     @Module({
-      providers: [{ cls: Dep2, dependency: Dep }]
+      providers: [{ dependency: ClsA, cls: ClsB }]
     })
     class TestModule {}
 
-    const instance = Injector(TestModule).create(Dep);
-    expect(instance instanceof Dep2).toBe(true);
+    const instance = Injector(TestModule).create(ClsA);
+    expect(instance).toBeInstanceOf(ClsB);
+  });
+
+  it("should should import a module, provide classes & export classes", () => {
+    @Module({
+      providers: [ClsA]
+    })
+    class TestParentModule {}
+
+    @Module({
+      imports: [TestParentModule],
+      providers: [ClsB],
+      exports: [ClsB]
+    })
+    class TestModule {}
+
+    expect(Injector(TestModule).create(ClsA)).toBeInstanceOf(ClsA);
+    expect(Injector(TestModule).create(ClsB)).toBeInstanceOf(ClsB);
+  });
+
+  // TODO test ancestor imports
+
+  it("should should import a module, provide classes & export classes", () => {
+    @Module({
+      providers: [ClsC]
+    })
+    class TestAncestorModule {}
+
+    @Module({
+      imports: [TestAncestorModule],
+      providers: [ClsA]
+    })
+    class TestParentModule {}
+
+    @Module({
+      imports: [TestParentModule],
+      providers: [ClsB],
+      exports: [ClsB]
+    })
+    class TestModule {}
+
+    expect(Injector(TestModule).create(ClsA)).toBeInstanceOf(ClsA);
+    expect(Injector(TestModule).create(ClsB)).toBeInstanceOf(ClsB);
+    expect(Injector(TestModule).create(ClsC)).toBeInstanceOf(ClsC);
   });
 });
