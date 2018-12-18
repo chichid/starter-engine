@@ -1,3 +1,4 @@
+import { MetaKey } from "./Constants";
 import { Module } from "./Module";
 import { ModuleResolver } from "./ModuleResolver";
 import { getProperty, setProperty } from "./utils";
@@ -15,9 +16,10 @@ describe("Core Dependency Injection Module", () => {
     const mod = new ModuleResolver({
       providers: [ClsA]
     });
-    expect(mod).toBeDefined();
 
-    const emptyMod = new ModuleResolver(null);
+    const emptyMod = new ModuleResolver();
+
+    expect(mod).toBeDefined();
     expect(emptyMod).toBeDefined();
   });
 
@@ -51,28 +53,60 @@ describe("Core Dependency Injection Module", () => {
     expect(tm.container.isBound(ClsA)).toBeTruthy();
   });
 
+  it("should throw when missing the module decorator", () => {
+    class TestParentMod {}
+
+    expect(
+      () =>
+        new ModuleResolver({
+          imports: [TestParentMod]
+        })
+    ).toThrow();
+  });
+
   it("should import a class", () => {
     @Module()
     class TestModule {}
 
-    const testMod = getProperty(TestModule, "module");
+    const testMod = getProperty(TestModule, MetaKey.MODULE_RESOLVER);
     testMod.importClass = jest.fn();
 
     testMod.importDependency(ClsA);
     expect(testMod.importClass).toBeCalledWith(ClsA.name, ClsA);
   });
 
+  it("should throw when unable to import a class", () => {
+    @Module()
+    class TestModule {}
+
+    const testMod = getProperty(TestModule, MetaKey.MODULE_RESOLVER);
+    expect(() => testMod.importDependency({})).toThrow(
+      `Unable to import [object Object] within TestModule`
+    );
+  });
+
   it("should import a factory", () => {
     @Module()
     class TestModule {}
 
-    const testMod = getProperty(TestModule, "module");
+    const testMod = getProperty(TestModule, MetaKey.MODULE_RESOLVER);
     testMod.importClass = jest.fn();
 
     const factory = jest.fn();
     testMod.importDependency({ factory, dependency: ClsA });
 
     expect(testMod.importClass).toBeCalledWith(ClsA.name, ClsA, factory);
+  });
+
+  it("should throw when importing a class and no metadata is available", () => {
+    @Module()
+    class TestModule {}
+
+    const testMod = getProperty(TestModule, MetaKey.MODULE_RESOLVER);
+    testMod.metadata = null;
+    expect(() => testMod.importClass("TestProvider", {})).toThrow(
+      `Unable to import provider TestProvider, maybe it's missing a @Injectable decorator or it's missing from the providers declaration`
+    );
   });
 
   it("should import and map a class", () => {

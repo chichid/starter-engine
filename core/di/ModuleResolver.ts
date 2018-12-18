@@ -93,8 +93,8 @@ export class ModuleResolver {
     } else if (dep.name) {
       this.importClass(dep.name, dep);
     } else {
-      const modName = getProperty(this, "name");
-      throw new Error(`Unable to import ${dep} within ${modName}`);
+      const { moduleName } = this.metadata;
+      throw new Error(`Unable to import ${dep} within ${moduleName}`);
     }
   }
 
