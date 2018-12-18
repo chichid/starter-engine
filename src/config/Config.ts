@@ -10,7 +10,9 @@ import { KeyValue } from "./types";
 
 @Injectable()
 export class Config {
-  @Inject private fileUtils: FileUtils;
+  @Inject
+  private fileUtils: FileUtils;
+
   private cache: KeyValue;
 
   public async get<T>(key: ConfigKey) {

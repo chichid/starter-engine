@@ -4,6 +4,6 @@ import { FileUtils } from "./FileUtils";
 export { FileUtils };
 
 @Module({
-  exports: [FileUtils]
+  providers: [FileUtils]
 })
 export class UtilsModule {}

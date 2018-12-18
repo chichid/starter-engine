@@ -47,7 +47,7 @@ describe("Config", () => {
     const loadFunc = (instance as any).load;
 
     // tslint:disable-next-line:only-arrow-functions
-    (instance as any).load = function () {
+    (instance as any).load = function() {
       loadCallCount = loadCallCount + 1;
       return loadFunc.apply(instance, arguments);
     };
