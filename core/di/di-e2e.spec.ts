@@ -1,5 +1,4 @@
 import { Injectable, Injector, Module } from ".";
-import { getProperty, setProperty } from "./utils";
 
 describe("core/di e2e tests", () => {
   // Fixtures
@@ -23,56 +22,63 @@ describe("core/di e2e tests", () => {
   // Tests
   it("should create an empty module module", () => {
     @Module({})
-    class ModA {}
+    class TestModule {}
 
-    const mod = new ModA();
+    const mod = new TestModule();
     expect(mod).toBeDefined();
   });
 
-  it("should create a module with an import", () => {
+  it("should throw exception when importing a non existing dependency ", () => {
+    @Module({})
+    class TestModule {}
+    expect(() => Injector(TestModule).create(ClsA)).toThrow(
+      `ClsA is not declared in module TestModule`
+    );
+  });
+
+  it("should provide injectable classes", () => {
     @Module({
       providers: [ClsA, ClsB]
     })
-    class ModA {}
-    const modA = new ModA();
-    expect(modA).toBeDefined();
+    class TestModule {}
 
-    const instanceA = Injector(ModA).create(ClsA);
+    const instanceA = Injector(TestModule).create(ClsA);
     expect(instanceA).toBeDefined();
     expect(instanceA.methodA).toBeDefined();
     expect(instanceA.methodA()).toEqual("methodA");
 
-    const instanceB = Injector(ModA).create(ClsB);
+    const instanceB = Injector(TestModule).create(ClsB);
     expect(instanceB.methodB).toBeDefined();
     expect(instanceB.methodB()).toEqual(true);
   });
 
-  it("should create a module that imports another module", () => {
+  it("should import a module", () => {
     @Module({
       providers: [ClsA, ClsC],
       exports: [ClsA]
     })
-    class ModA {}
+    class TestModule {}
 
     @Module({
-      providers: [ModA, ClsB]
+      imports: [TestModule],
+      providers: [ClsB]
     })
-    class ModB {}
+    class AnotherTestModule {}
 
-    expect(Injector(ModA).create(ClsA)).toBeDefined();
-    expect(Injector(ModA).create(ClsC)).toBeDefined();
+    expect(Injector(TestModule).create(ClsA)).toBeDefined();
+    expect(Injector(TestModule).create(ClsC)).toBeDefined();
 
-    expect(Injector(ModB).create(ClsB)).toBeDefined();
-    expect(Injector(ModA).create(ClsA)).toBeDefined();
+    expect(Injector(AnotherTestModule).create(ClsB)).toBeDefined();
+    expect(Injector(TestModule).create(ClsA)).toBeDefined();
 
     try {
-      Injector(ModA).create(ClsB);
+      Injector(TestModule).create(ClsB);
     } catch (e) {
       expect(e).toBeDefined();
     }
 
     try {
-      Injector(ModB).create(ClsC);
+      Injector(AnotherTestModule).create(ClsC);
     } catch (e) {
       expect(e).toBeDefined();
     }
@@ -101,7 +107,7 @@ describe("core/di e2e tests", () => {
     expect(nonSingletonInstance1).not.toBe(nonSingletonInstance2);
   });
 
-  it("should import dependency with factory", () => {
+  it("should provide dependency with factory", () => {
     const factory = jest.fn();
 
     @Injectable()
@@ -119,7 +125,7 @@ describe("core/di e2e tests", () => {
     expect(factory).toBeCalled();
   });
 
-  it("should import dependency with class mapping", () => {
+  it("should provide dependency with class mapping", () => {
     @Injectable()
     class Dep2 {}
 

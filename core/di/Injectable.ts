@@ -1,10 +1,7 @@
 import { injectable } from "inversify";
 import "reflect-metadata";
+import { InjectableMetadata } from "./InjectableMetadata";
 import { setProperty } from "./utils";
-
-export class InjectableMetadata {
-  public singleton?: boolean;
-}
 
 // tslint:disable-next-line
 export function Injectable(metadata?: InjectableMetadata) {

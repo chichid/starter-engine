@@ -1,6 +1,7 @@
-import { Container } from "inversify";
+import { Container, METADATA_KEY } from "inversify";
 import "reflect-metadata";
-import { InjectableMetadata } from "./Injectable";
+import { MetaKey } from "./Constants";
+import { InjectableMetadata } from "./InjectableMetadata";
 import { ModuleMetadata } from "./ModuleMetadata";
 import { getProperty } from "./utils";
 
@@ -12,13 +13,12 @@ export class ModuleResolver {
     return this.metadata.exports;
   }
 
-  constructor(private metadata: ModuleMetadata) {
-    this.importedTypes = new Map<string, string>();
-
+  constructor(private metadata?: ModuleMetadata) {
     if (!this.metadata) {
       this.metadata = {};
     }
 
+    this.importedTypes = new Map<string, string>();
     this.initContainer();
   }
 
@@ -37,31 +37,49 @@ export class ModuleResolver {
 
   private initContainer() {
     this.container = new Container();
-    this.processImports();
+
+    if (this.metadata.providers) {
+      this.processProviders();
+    }
+
+    if (this.metadata.imports) {
+      this.processImports();
+    }
+  }
+
+  private processProviders() {
+    for (const p of this.metadata.providers) {
+      this.importDependency(p);
+    }
   }
 
   private processImports() {
-    const imports = this.metadata.providers;
+    for (const imp of this.metadata.imports) {
+      const mod = getProperty(imp, MetaKey.MODULE_RESOLVER) as ModuleResolver;
 
-    if (!imports) {
-      return;
-    }
-
-    for (const imp of imports) {
-      const m = getProperty(imp, "module");
-      if (m instanceof ModuleResolver) {
-        this.importModuleExports(m as ModuleResolver);
+      if (mod) {
+        this.importModule(mod);
       } else {
-        this.importDependency(imp);
+        throw new Error(
+          `Unable to import module ${
+            imp.name
+          }, maybe it's missing a @Module decorator`
+        );
       }
     }
   }
 
-  private importModuleExports(mod: ModuleResolver) {
-    if (mod && mod.metadata && mod.metadata.exports) {
-      for (const modImport of mod.metadata.exports) {
-        this.importDependency(modImport);
-      }
+  private importModule(mod: ModuleResolver) {
+    if (mod.container) {
+      this.container = Container.merge(
+        mod.container,
+        this.container
+      ) as Container;
+
+      this.importedTypes = new Map([
+        ...Array.from(this.importedTypes.entries()),
+        ...Array.from(mod.importedTypes.entries())
+      ]);
     }
   }
 
@@ -85,6 +103,15 @@ export class ModuleResolver {
   }
 
   private importClass(type, dep, factoryOrCls?, isCls?) {
+    const metadata = getProperty(dep, MetaKey.INJECTABLE_METADATA);
+    if (!metadata) {
+      throw new Error(
+        `Unable to import provider ${
+          metadata.name
+        }, maybe it's missing a @Injectable decorator or it's missing from the providers declaration`
+      );
+    }
+
     let binding: any = this.container.bind(dep);
 
     if (isCls) {
@@ -105,7 +132,7 @@ export class ModuleResolver {
 
     const metadata = getProperty(
       dep,
-      "injectableMetadata"
+      MetaKey.INJECTABLE_METADATA
     ) as InjectableMetadata;
 
     if (!metadata) {

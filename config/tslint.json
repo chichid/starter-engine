@@ -10,11 +10,7 @@
   "linterOptions": {
     "ordered-imports": true,
     "type-check": true,
-    "exclude": [
-      "./test/TestStarter",
-      "../dist",
-      "../node_modules"
-    ]
+    "exclude": ["./test/TestStarter", "../dist", "../node_modules"]
   },
   "rules": {
     "eofline": false,
@@ -22,23 +18,16 @@
     "max-classes-per-file": false,
     "object-literal-sort-keys": false,
     "no-floating-promises": true,
-    "indent": [
-      true,
-      "spaces",
-      2
-    ],
-    "import-name": [
-      false
-    ],
+    "indent": [true, "spaces", 2],
+    "import-name": [false],
     "quotemark": [
       true,
-      "double",
+      "template",
       "avoid-escape",
-      "avoid-template"
+      "avoid-double",
+      "avoid-single"
     ],
-    "prefer-template": [
-      true
-    ]
+    "prefer-template": [true]
   },
   "rulesDirectory": []
 }

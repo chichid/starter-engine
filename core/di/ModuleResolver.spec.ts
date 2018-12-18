@@ -9,6 +9,7 @@ describe("Core Dependency Injection Module", () => {
       return "methodA";
     }
   }
+  setProperty(ClsA, "injectableMetadata", {});
 
   it("create a module", () => {
     const mod = new ModuleResolver({
@@ -54,19 +55,21 @@ describe("Core Dependency Injection Module", () => {
     expect(t).toThrow();
   });
 
-  it("should import module exports", () => {
+  it("should import module", () => {
     @Module({
-      exports: [ClsA]
+      providers: [ClsA]
     })
     class TestParentMod {}
 
     const testMod = new ModuleResolver({
-      providers: [TestParentMod]
+      imports: [TestParentMod]
     });
 
     const tm = testMod as any;
-    tm.importModuleExports(new TestParentMod());
+    tm.importModule(new TestParentMod());
+
     expect(tm.importedTypes.get(ClsA.name)).toBeDefined();
+    expect(tm.container.isBound(ClsA)).toBeTruthy();
   });
 
   it("should import a class", () => {
