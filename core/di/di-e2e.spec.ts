@@ -1,4 +1,4 @@
-import { Injectable, Injector, Module } from ".";
+import { Inject, Injectable, Injector, Module } from ".";
 
 describe("core/di e2e tests", () => {
   // Fixtures
@@ -170,5 +170,21 @@ describe("core/di e2e tests", () => {
     expect(Injector(TestModule).create(ClsA)).toBeInstanceOf(ClsA);
     expect(Injector(TestModule).create(ClsB)).toBeInstanceOf(ClsB);
     expect(Injector(TestModule).create(ClsC)).toBeInstanceOf(ClsC);
+  });
+
+  it("should inject properties", () => {
+    @Injectable()
+    class TestClass {
+      @Inject
+      public clsA: ClsA;
+    }
+
+    @Module({
+      providers: [ClsA, TestClass]
+    })
+    class TestModule {}
+
+    const testClass = Injector(TestModule).create(TestClass) as TestClass;
+    expect(testClass.clsA).toBeInstanceOf(ClsA);
   });
 });
