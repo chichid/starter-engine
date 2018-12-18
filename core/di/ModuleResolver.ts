@@ -9,10 +9,6 @@ export class ModuleResolver {
   private container: Container;
   private importedTypes: Map<string, any>;
 
-  get exports() {
-    return this.metadata.exports;
-  }
-
   constructor(private metadata?: ModuleMetadata) {
     if (!this.metadata) {
       this.metadata = {};
