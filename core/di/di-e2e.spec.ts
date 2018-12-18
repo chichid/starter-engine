@@ -54,8 +54,7 @@ describe("core/di e2e tests", () => {
 
   it("should import a module", () => {
     @Module({
-      providers: [ClsA, ClsC],
-      exports: [ClsA]
+      providers: [ClsA, ClsC]
     })
     class TestModule {}
 
@@ -137,8 +136,7 @@ describe("core/di e2e tests", () => {
 
     @Module({
       imports: [TestParentModule],
-      providers: [ClsB],
-      exports: [ClsB]
+      providers: [ClsB]
     })
     class TestModule {}
 
@@ -162,8 +160,7 @@ describe("core/di e2e tests", () => {
 
     @Module({
       imports: [TestParentModule],
-      providers: [ClsB],
-      exports: [ClsB]
+      providers: [ClsB]
     })
     class TestModule {}
 

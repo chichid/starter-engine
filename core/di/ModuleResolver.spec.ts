@@ -13,21 +13,12 @@ describe("Core Dependency Injection Module", () => {
 
   it("create a module", () => {
     const mod = new ModuleResolver({
-      providers: [ClsA],
-      exports: []
+      providers: [ClsA]
     });
     expect(mod).toBeDefined();
 
     const emptyMod = new ModuleResolver(null);
     expect(emptyMod).toBeDefined();
-  });
-
-  it("should get exports", () => {
-    const testMod = new ModuleResolver({
-      exports: [ClsA]
-    });
-
-    expect(testMod.exports).toEqual([ClsA]);
   });
 
   it("should create a module dependency", () => {
@@ -41,18 +32,6 @@ describe("Core Dependency Injection Module", () => {
     testMod.container.get = jest.fn();
     testMod.create(ClsA);
     expect(testMod.container.get).toBeCalledWith(ClsA);
-  });
-
-  it("should throw exception when unable to import dependencies", () => {
-    const testMod = new ModuleResolver({
-      exports: [ClsA]
-    });
-
-    const t = () => {
-      (testMod as any).importDependency({});
-    };
-
-    expect(t).toThrow();
   });
 
   it("should import module", () => {

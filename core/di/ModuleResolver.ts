@@ -104,11 +104,10 @@ export class ModuleResolver {
 
   private importClass(type, dep, factoryOrCls?, isCls?) {
     const metadata = getProperty(dep, MetaKey.INJECTABLE_METADATA);
+
     if (!metadata) {
       throw new Error(
-        `Unable to import provider ${
-          metadata.name
-        }, maybe it's missing a @Injectable decorator or it's missing from the providers declaration`
+        `Unable to import provider ${type}, maybe it's missing a @Injectable decorator or it's missing from the providers declaration`
       );
     }
 
