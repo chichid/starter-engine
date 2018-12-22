@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/starter-engine
     docker:
-      - image: circleci/node:4.8.2
+      - image: circleci/node:8.11.3
     steps: # a collection of executable commands
       - checkout
       - restore_cache:
