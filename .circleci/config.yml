@@ -12,14 +12,16 @@ jobs:
         name: Install
         command: npm install
       - run:
-        Install JUnit coverage reporter
-        npm install -save-dev jest-junit
+        name: Install JUnit coverage reporter
+        command: npm install -save-dev jest-junit
       - run:
         name: Lint
         command: npm run lint
       - run:
         name: Test
-        command: npm test
+        command: npm test -- --ci --runInBand --reporters=default --reporters=jest-junit
+        environment:
+          JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
       - store_test_results:
         path: reports
       - run:
