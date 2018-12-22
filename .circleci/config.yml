@@ -22,7 +22,7 @@ jobs:
           command: npm test -- --ci --runInBand --testResultsProcessor="jest-stare" --coverage
           environment:
             JEST_STARE_RESULT_DIR: "reports/jest"
-            JEST_STARE_COVERAGE_LINK: "../../lcov-report/index.html"
+            JEST_STARE_COVERAGE_LINK: "../lcov-report/index.html"
       - store_test_results:
           path: reports/jest
       - store_artifacts:
