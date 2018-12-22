@@ -7,25 +7,25 @@ jobs:
     steps: # a collection of executable commands
       - checkout
       - restore_cache:
-        key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
-        name: Install
-        command: npm install
+          name: Install
+          command: npm install
       - run:
-        name: Install JUnit coverage reporter
-        command: npm install -save-dev jest-junit
+          name: Install JUnit coverage reporter
+          command: npm install -save-dev jest-junit
       - run:
-        name: Lint
-        command: npm run lint
+          name: Lint
+          command: npm run lint
       - run:
-        name: Test
-        command: npm test -- --ci --runInBand --reporters=default --reporters=jest-junit
-        environment:
-          JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+          name: Test
+          command: npm test -- --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
       - run:
-        name: Pack
-        command: npm pack
+          name: Pack
+          command: npm pack
       - save_cache:
-        key: dependency-cache-{{ checksum "package.json" }}
-        paths:
-          - ./node_modules
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
