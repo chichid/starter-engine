@@ -24,7 +24,7 @@
     "@types/jest": "^23.3.9",
     "@types/node": "^10.12.9",
     "jest": "^23.6.0",
-    "nodemon-webpack-plugin": "^3.0.1",
+    "nodemon-webpack-plugin": "^4.0.6",
     "prettier": "^1.15.2",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
