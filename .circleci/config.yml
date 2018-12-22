@@ -19,7 +19,7 @@ jobs:
           command: npm run lint --format junit -o reports/junit/lint-results.xml
       - run:
           name: Test
-          command: npm test -- --ci --testResultsProcessor="jest-junit"
+          command: npm test -- --ci --testResultsProcessor="jest-junit" --coverage
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/test-results.xml"
       - store_test_results:
