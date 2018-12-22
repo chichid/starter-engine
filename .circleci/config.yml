@@ -7,23 +7,22 @@ jobs:
     steps: # a collection of executable commands
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+        key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: Install
-          command: npm install
+        name: Install
+        command: npm install
       - run:
-          name: Lint
-          command: npm run lint
+        name: Lint
+        command: npm run lint
       - run:
-          name: Test
-          command: npm test
+        name: Test
+        command: npm test
+      - store_test_results:
+        path: reports
       - run:
-          name: Pack
-          command: npm pack
-      - persist_to_workspace:
-          root: ~/starter-engine
-          paths: ./reports
+        name: Pack
+        command: npm pack
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
+        key: dependency-cache-{{ checksum "package.json" }}
+        paths:
+          - ./node_modules
