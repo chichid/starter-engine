@@ -21,9 +21,9 @@ jobs:
           name: Test
           command: npm test -- --ci --runInBand --reporters=default --reporters=jest-junit
           environment:
-            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+            JEST_JUNIT_OUTPUT: "reports/test-results.xml"
       - store_test_results:
-          path: reports
+          path: reports/test-results.xml
       - run:
           name: Pack
           command: npm pack
