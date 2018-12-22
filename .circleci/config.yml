@@ -19,13 +19,15 @@ jobs:
           command: npm run lint --format junit -o reports/junit/lint-results.xml
       - run:
           name: Test
-          command: npm test -- --ci --testResultsProcessor="jest-junit" --coverage
+          command: npm test -- --ci --runInBand --testResultsProcessor="jest-junit" --coverage
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/test-results.xml"
       - store_test_results:
           path: reports/junit
       - store_artifacts:
           path: reports/junit
+      - store_artifacts:
+          path: reports/lcov-report
       - run:
           name: Pack
           command: npm pack
