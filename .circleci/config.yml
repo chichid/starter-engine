@@ -6,20 +6,25 @@ jobs: # a collection of steps
       - image: circleci/node:4.8.2 # ...with this image as the primary container; this is where all `steps` will run
       - image: mongo:3.4.4 # and this image as the secondary service container
     steps: # a collection of executable commands
-      - checkout # special step to check out source code to working directory
-      - restore_cache: # special step to restore the dependency cache
-          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+      - checkout
+      - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: Install Dependencies
+          name: Install
           command: npm install
+      - run: # prod
+          name: Lint
+          command: npm run lint
+      - run: # prod
+          name: Test
+          command: npm test
+      - run: # prod
+          name: Pack
+          command: npm pack
       - save_cache: # special step to save the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run: # prod
-          name: Production Build
-          command: npm pack
       - persist_to_workspace:
           root: ~/starter-engine
           paths: ./reports
