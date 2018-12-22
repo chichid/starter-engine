@@ -17,7 +17,7 @@ let config = {
 
 if (!isWatch || coverage) {
   config = Object.assign({}, config, {
-    reporters: ["default", "jest-junit"],
+    reporters: ["default"],
     coverageDirectory: "reports",
     collectCoverage: true,
     collectCoverageFrom: ["**/*.{ts,tsx}", "!**/node_modules/**"]
