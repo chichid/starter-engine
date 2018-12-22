@@ -23,7 +23,9 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT: "reports/test-results.xml"
       - store_test_results:
-          path: reports/test-results.xml
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
       - run:
           name: Pack
           command: npm pack
