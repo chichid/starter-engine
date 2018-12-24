@@ -10,23 +10,13 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@core": [
-        "../core/index"
-      ],
-      "@core/*": [
-        "../core/*"
-      ]
+      "@core": ["../core/index"],
+      "@core/*": ["../core/*"]
     },
-    "types": [
-      "reflect-metadata",
-      "jest",
-      "node"
-    ],
-    "lib": [
-      "dom",
-      "es2015"
-    ],
+    "types": ["reflect-metadata", "jest", "node"],
+    "lib": ["dom", "es2015"],
     "plugins": [
       {
         "name": "typescript-tslint-plugin",
@@ -34,13 +24,6 @@
       }
     ]
   },
-  "include": [
-    "../src/**/*.ts",
-    "../core/**/*.ts"
-  ],
-  "exclude": [
-    "../node_modules",
-    "../build",
-    "../dist"
-  ]
+  "include": ["../src/**/*.ts", "../core/**/*.ts"],
+  "exclude": ["../node_modules", "../build", "../dist"]
 }

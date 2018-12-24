@@ -6,7 +6,7 @@ import {
   DEFAULT_CONFIG_FILE,
   DEFAULT_CONFIG_PATH
 } from "./Defaults";
-import { KeyValue } from "./types";
+import { KeyValue } from "./Types";
 
 @Injectable()
 export class Config {
